@@ -22,10 +22,10 @@ public class MainActivity extends BaseActivity {
   }
 
   /**
-   * Goes to the user list screen.
+   * Goes to the movie list screen.
    */
   @OnClick(R.id.btn_LoadData)
-  void navigateToUserList() {
-    this.navigator.navigateToUserList(this);
+  void navigateToMovieList() {
+    this.navigator.navigateToMovieList(this);
   }
 }

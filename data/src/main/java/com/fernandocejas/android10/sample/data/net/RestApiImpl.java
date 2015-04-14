@@ -7,8 +7,8 @@ package com.fernandocejas.android10.sample.data.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import com.fernandocejas.android10.sample.data.entity.UserEntity;
-import com.fernandocejas.android10.sample.data.entity.mapper.UserEntityJsonMapper;
+import com.fernandocejas.android10.sample.data.entity.MovieEntity;
+import com.fernandocejas.android10.sample.data.entity.mapper.MovieEntityJsonMapper;
 import com.fernandocejas.android10.sample.data.exception.NetworkConnectionException;
 import java.util.Collection;
 
@@ -18,66 +18,66 @@ import java.util.Collection;
 public class RestApiImpl implements RestApi {
 
   private final Context context;
-  private final UserEntityJsonMapper userEntityJsonMapper;
+  private final MovieEntityJsonMapper movieEntityJsonMapper;
 
   /**
    * Constructor of the class
    *
    * @param context {@link android.content.Context}.
-   * @param userEntityJsonMapper {@link UserEntityJsonMapper}.
+   * @param movieEntityJsonMapper {@link MovieEntityJsonMapper}.
    */
-  public RestApiImpl(Context context, UserEntityJsonMapper userEntityJsonMapper) {
-    if (context == null || userEntityJsonMapper == null) {
+  public RestApiImpl(Context context, MovieEntityJsonMapper movieEntityJsonMapper) {
+    if (context == null || movieEntityJsonMapper == null) {
       throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
     }
     this.context = context.getApplicationContext();
-    this.userEntityJsonMapper = userEntityJsonMapper;
+    this.movieEntityJsonMapper = movieEntityJsonMapper;
   }
 
-  @Override public void getUserList(UserListCallback userListCallback) {
-    if (userListCallback == null) {
+  @Override public void getMovieList(MovieListCallback movieListCallback) {
+    if (movieListCallback == null) {
       throw new IllegalArgumentException("Callback cannot be null!!!");
     }
 
     if (isThereInternetConnection()) {
       try {
-        ApiConnection getUserListConnection =
+        ApiConnection getMovieListConnection =
             ApiConnection.createGET(RestApi.API_URL_GET_USER_LIST);
-        String responseUserList = getUserListConnection.requestSyncCall();
-        Collection<UserEntity> userEntityList =
-            this.userEntityJsonMapper.transformUserEntityCollection(responseUserList);
+        String responseMovieList = getMovieListConnection.requestSyncCall();
+        Collection<MovieEntity> movieEntityList =
+            this.movieEntityJsonMapper.transformMovieEntityCollection(responseMovieList);
 
-        userListCallback.onUserListLoaded(userEntityList);
+        movieListCallback.onMovieListLoaded(movieEntityList);
       } catch (Exception e) {
-        userListCallback.onError(new NetworkConnectionException(e.getCause()));
+        movieListCallback.onError(new NetworkConnectionException(e.getCause()));
       }
     } else {
-      userListCallback.onError(new NetworkConnectionException());
+      movieListCallback.onError(new NetworkConnectionException());
     }
   }
 
   /**
    * {@inheritDoc}
    */
-  @Override public void getUserById(final int userId,
-      final UserDetailsCallback userDetailsCallback) {
-    if (userDetailsCallback == null) {
+  @Override public void getMovieById(final int movieId,
+      final MovieDetailsCallback movieDetailsCallback) {
+    if (movieDetailsCallback == null) {
       throw new IllegalArgumentException("Callback cannot be null!!!");
     }
 
     if (isThereInternetConnection()) {
       try {
-        String apiUrl = RestApi.API_URL_GET_USER_DETAILS + userId + ".json";
-        ApiConnection getUserDetailsConnection = ApiConnection.createGET(apiUrl);
-        String responseUserDetails = getUserDetailsConnection.requestSyncCall();
-        UserEntity userEntity = this.userEntityJsonMapper.transformUserEntity(responseUserDetails);
+        String apiUrl = RestApi.API_URL_GET_USER_DETAILS + movieId + ".json";
+        ApiConnection getMovieDetailsConnection = ApiConnection.createGET(apiUrl);
+        String responseMovieDetails = getMovieDetailsConnection.requestSyncCall();
+        MovieEntity movieEntity = this.movieEntityJsonMapper.transformMovieEntity(responseMovieDetails);
 
-        userDetailsCallback.onUserEntityLoaded(userEntity);
+        movieDetailsCallback.onMovieEntityLoaded(movieEntity);
       } catch (Exception e) {
-        userDetailsCallback.onError(new NetworkConnectionException(e.getCause()));
+        movieDetailsCallback.onError(new NetworkConnectionException(e.getCause()));
       }
     } else {
-      userDetailsCallback.onError(new NetworkConnectionException());
+      movieDetailsCallback.onError(new NetworkConnectionException());
     }
   }
 

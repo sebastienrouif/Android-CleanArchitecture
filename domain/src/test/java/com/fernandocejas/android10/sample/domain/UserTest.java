@@ -10,21 +10,21 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class UserTest {
+public class MovieTest {
 
   private static final int FAKE_USER_ID = 8;
 
-  private User user;
+  private Movie movie;
 
   @Before
   public void setUp() {
-    user = new User(FAKE_USER_ID);
+    movie = new Movie(FAKE_USER_ID);
   }
 
   @Test
-  public void testUserConstructorHappyCase() {
-    int userId = user.getUserId();
+  public void testMovieConstructorHappyCase() {
+    int movieId = movie.getMovieId();
 
-    assertThat(userId, is(FAKE_USER_ID));
+    assertThat(movieId, is(FAKE_USER_ID));
   }
 }

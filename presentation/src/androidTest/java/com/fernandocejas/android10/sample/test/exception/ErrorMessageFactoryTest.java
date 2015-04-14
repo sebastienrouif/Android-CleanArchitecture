@@ -6,7 +6,7 @@ package com.fernandocejas.android10.sample.test.exception;
 
 import android.test.AndroidTestCase;
 import com.fernandocejas.android10.sample.data.exception.NetworkConnectionException;
-import com.fernandocejas.android10.sample.data.exception.UserNotFoundException;
+import com.fernandocejas.android10.sample.data.exception.MovieNotFoundException;
 import com.fernandocejas.android10.sample.presentation.R;
 import com.fernandocejas.android10.sample.presentation.exception.ErrorMessageFactory;
 
@@ -28,9 +28,9 @@ public class ErrorMessageFactoryTest extends AndroidTestCase {
     assertThat(actualMessage, is(equalTo(expectedMessage)));
   }
 
-  public void testUserNotFoundErrorMessage() {
-    String expectedMessage = getContext().getString(R.string.exception_message_user_not_found);
-    String actualMessage = ErrorMessageFactory.create(getContext(), new UserNotFoundException());
+  public void testMovieNotFoundErrorMessage() {
+    String expectedMessage = getContext().getString(R.string.exception_message_movie_not_found);
+    String actualMessage = ErrorMessageFactory.create(getContext(), new MovieNotFoundException());
 
     assertThat(actualMessage, is(equalTo(expectedMessage)));
   }

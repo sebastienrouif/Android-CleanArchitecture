@@ -5,7 +5,7 @@
 package com.fernandocejas.android10.sample.data.cache.serializer;
 
 import com.fernandocejas.android10.sample.data.ApplicationTestCase;
-import com.fernandocejas.android10.sample.data.entity.UserEntity;
+import com.fernandocejas.android10.sample.data.entity.MovieEntity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,21 +33,21 @@ public class JsonSerializerTest extends ApplicationTestCase {
 
   @Test
   public void testSerializeHappyCase() {
-    UserEntity userEntityOne = jsonSerializer.deserialize(JSON_RESPONSE);
-    String jsonString = jsonSerializer.serialize(userEntityOne);
-    UserEntity userEntityTwo = jsonSerializer.deserialize(jsonString);
+    MovieEntity movieEntityOne = jsonSerializer.deserialize(JSON_RESPONSE);
+    String jsonString = jsonSerializer.serialize(movieEntityOne);
+    MovieEntity movieEntityTwo = jsonSerializer.deserialize(jsonString);
 
-    assertThat(userEntityOne.getUserId(), is(userEntityTwo.getUserId()));
-    assertThat(userEntityOne.getFullname(), is(equalTo(userEntityTwo.getFullname())));
-    assertThat(userEntityOne.getFollowers(), is(userEntityTwo.getFollowers()));
+    assertThat(movieEntityOne.getMovieId(), is(movieEntityTwo.getMovieId()));
+    assertThat(movieEntityOne.getFullname(), is(equalTo(movieEntityTwo.getFullname())));
+    assertThat(movieEntityOne.getFollowers(), is(movieEntityTwo.getFollowers()));
   }
 
   @Test
   public void testDesearializeHappyCase() {
-    UserEntity userEntity = jsonSerializer.deserialize(JSON_RESPONSE);
+    MovieEntity movieEntity = jsonSerializer.deserialize(JSON_RESPONSE);
 
-    assertThat(userEntity.getUserId(), is(1));
-    assertThat(userEntity.getFullname(), is("Simon Hill"));
-    assertThat(userEntity.getFollowers(), is(7484));
+    assertThat(movieEntity.getMovieId(), is(1));
+    assertThat(movieEntity.getFullname(), is("Simon Hill"));
+    assertThat(movieEntity.getFollowers(), is(7484));
   }
 }

@@ -4,13 +4,13 @@
  */
 package com.fernandocejas.android10.sample.data.cache.serializer;
 
-import com.fernandocejas.android10.sample.data.entity.UserEntity;
+import com.fernandocejas.android10.sample.data.entity.MovieEntity;
 import com.google.gson.Gson;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Class user as Serializer/Deserializer for user entities.
+ * Class movie as Serializer/Deserializer for movie entities.
  */
 @Singleton
 public class JsonSerializer {
@@ -23,10 +23,10 @@ public class JsonSerializer {
   /**
    * Serialize an object to Json.
    *
-   * @param userEntity {@link UserEntity} to serialize.
+   * @param object {@link Object} to serialize.
    */
-  public String serialize(UserEntity userEntity) {
-    String jsonString = gson.toJson(userEntity, UserEntity.class);
+  public String serialize(Object object) {
+    String jsonString = gson.toJson(object, object.getClass());
     return jsonString;
   }
 
@@ -34,10 +34,9 @@ public class JsonSerializer {
    * Deserialize a json representation of an object.
    *
    * @param jsonString A json string to deserialize.
-   * @return {@link UserEntity}
+   * @return {@link MovieEntity}
    */
-  public UserEntity deserialize(String jsonString) {
-    UserEntity userEntity = gson.fromJson(jsonString, UserEntity.class);
-    return userEntity;
+  public <T> T  deserialize(String jsonString, Class<T> classOfT) {
+    return (T) gson.fromJson(jsonString, classOfT);
   }
 }

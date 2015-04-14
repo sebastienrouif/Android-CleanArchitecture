@@ -5,13 +5,13 @@
 package com.fernandocejas.android10.sample.presentation.internal.di.modules;
 
 import android.content.Context;
-import com.fernandocejas.android10.sample.data.cache.UserCache;
-import com.fernandocejas.android10.sample.data.cache.UserCacheImpl;
+import com.fernandocejas.android10.sample.data.cache.MovieCache;
+import com.fernandocejas.android10.sample.data.cache.MovieCacheImpl;
 import com.fernandocejas.android10.sample.data.executor.JobExecutor;
-import com.fernandocejas.android10.sample.data.repository.UserDataRepository;
+import com.fernandocejas.android10.sample.data.repository.MovieDataRepository;
 import com.fernandocejas.android10.sample.domain.executor.PostExecutionThread;
 import com.fernandocejas.android10.sample.domain.executor.ThreadExecutor;
-import com.fernandocejas.android10.sample.domain.repository.UserRepository;
+import com.fernandocejas.android10.sample.domain.repository.MovieRepository;
 import com.fernandocejas.android10.sample.presentation.AndroidApplication;
 import com.fernandocejas.android10.sample.presentation.UIThread;
 import com.fernandocejas.android10.sample.presentation.navigation.Navigator;
@@ -46,11 +46,11 @@ public class ApplicationModule {
     return uiThread;
   }
 
-  @Provides @Singleton UserCache provideUserCache(UserCacheImpl userCache) {
-    return userCache;
+  @Provides @Singleton MovieCache provideMovieCache(MovieCacheImpl movieCache) {
+    return movieCache;
   }
 
-  @Provides @Singleton UserRepository provideUserRepository(UserDataRepository userDataRepository) {
-    return userDataRepository;
+  @Provides @Singleton MovieRepository provideMovieRepository(MovieDataRepository movieDataRepository) {
+    return movieDataRepository;
   }
 }

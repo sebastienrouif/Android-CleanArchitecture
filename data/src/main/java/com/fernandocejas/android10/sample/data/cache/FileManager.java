@@ -103,9 +103,9 @@ public class FileManager {
   }
 
   /**
-   * Write a value to a user preferences file.
+   * Write a value to a movie preferences file.
    *
-   * @param context {@link android.content.Context} to retrieve android user preferences.
+   * @param context {@link android.content.Context} to retrieve android movie preferences.
    * @param preferenceFileName A file name reprensenting where data will be written to.
    * @param key A string for the key that will be used to retrieve the value in the future.
    * @param value A long representing the value to be inserted.
@@ -121,9 +121,9 @@ public class FileManager {
   }
 
   /**
-   * Get a value from a user preferences file.
+   * Get a value from a movie preferences file.
    *
-   * @param context {@link android.content.Context} to retrieve android user preferences.
+   * @param context {@link android.content.Context} to retrieve android movie preferences.
    * @param preferenceFileName A file name representing where data will be get from.
    * @param key A key that will be used to retrieve the value from the preference file.
    * @return A long representing the value retrieved from the preferences file.
