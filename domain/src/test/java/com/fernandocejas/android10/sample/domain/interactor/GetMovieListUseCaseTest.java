@@ -27,6 +27,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class GetMovieListUseCaseTest {
 
+  private static final int FAKE_PAGE = 1;
   private GetMovieListUseCase getMovieListUseCase;
 
   @Mock
@@ -49,7 +50,7 @@ public class GetMovieListUseCaseTest {
 
     GetMovieListUseCase.Callback mockGetMovieListCallback = mock(GetMovieListUseCase.Callback.class);
 
-    getMovieListUseCase.execute(mockGetMovieListCallback);
+    getMovieListUseCase.execute(FAKE_PAGE, mockGetMovieListCallback);
 
     verify(mockThreadExecutor).execute(any(Interactor.class));
     verifyNoMoreInteractions(mockThreadExecutor);
@@ -62,12 +63,12 @@ public class GetMovieListUseCaseTest {
     GetMovieListUseCase.Callback mockGetMovieListCallback = mock(GetMovieListUseCase.Callback.class);
 
     doNothing().when(mockThreadExecutor).execute(any(Interactor.class));
-    doNothing().when(mockMovieRepository).getMovieList(any(MovieRepository.MovieListCallback.class));
+    doNothing().when(mockMovieRepository).getMovieList(0, any(MovieRepository.MovieListCallback.class));
 
-    getMovieListUseCase.execute(mockGetMovieListCallback);
+    getMovieListUseCase.execute(0, mockGetMovieListCallback);
     getMovieListUseCase.run();
 
-    verify(mockMovieRepository).getMovieList(any(MovieRepository.MovieListCallback.class));
+    verify(mockMovieRepository).getMovieList(FAKE_PAGE, any(MovieRepository.MovieListCallback.class));
     verify(mockThreadExecutor).execute(any(Interactor.class));
     verifyNoMoreInteractions(mockMovieRepository);
     verifyNoMoreInteractions(mockThreadExecutor);
@@ -87,9 +88,9 @@ public class GetMovieListUseCaseTest {
             mockResponseMovieList);
         return null;
       }
-    }).when(mockMovieRepository).getMovieList(any(MovieRepository.MovieListCallback.class));
+    }).when(mockMovieRepository).getMovieList(FAKE_PAGE, any(MovieRepository.MovieListCallback.class));
 
-    getMovieListUseCase.execute(mockGetMovieListCallback);
+    getMovieListUseCase.execute(FAKE_PAGE, mockGetMovieListCallback);
     getMovieListUseCase.run();
 
     verify(mockPostExecutionThread).post(any(Runnable.class));
@@ -109,9 +110,9 @@ public class GetMovieListUseCaseTest {
         ((MovieRepository.MovieListCallback) invocation.getArguments()[0]).onError(mockErrorBundle);
         return null;
       }
-    }).when(mockMovieRepository).getMovieList(any(MovieRepository.MovieListCallback.class));
+    }).when(mockMovieRepository).getMovieList(FAKE_PAGE, any(MovieRepository.MovieListCallback.class));
 
-    getMovieListUseCase.execute(mockGetMovieListUseCaseCallback);
+    getMovieListUseCase.execute(FAKE_PAGE, mockGetMovieListUseCaseCallback);
     getMovieListUseCase.run();
 
     verify(mockPostExecutionThread).post(any(Runnable.class));

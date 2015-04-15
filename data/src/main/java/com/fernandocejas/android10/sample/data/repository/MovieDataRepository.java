@@ -43,7 +43,7 @@ public class MovieDataRepository implements MovieRepository {
    *
    * @param movieListCallback A {@link MovieListCallback} used for notifying clients.
    */
-  @Override public void getMovieList(final MovieListCallback movieListCallback) {
+  @Override public void getMovieList(int page, final MovieListCallback movieListCallback) {
     //we always get all movies from the cloud
     final MovieDataStore movieDataStore = this.movieDataStoreFactory.createCloudDataStore();
     movieDataStore.getMoviesEntityList(new MovieDataStore.MovieListCallback() {

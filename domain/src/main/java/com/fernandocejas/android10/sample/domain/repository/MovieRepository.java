@@ -35,7 +35,7 @@ public interface MovieRepository {
    *
    * @param movieListCallback A {@link MovieListCallback} used for notifying clients.
    */
-  void getMovieList(MovieListCallback movieListCallback);
+  void getMovieList(int page, MovieListCallback movieListCallback);
 
   /**
    * Get an {@link Movie} by id.

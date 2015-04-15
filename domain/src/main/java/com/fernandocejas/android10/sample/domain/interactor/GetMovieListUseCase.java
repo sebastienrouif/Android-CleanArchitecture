@@ -28,5 +28,5 @@ public interface GetMovieListUseCase extends Interactor {
    *
    * @param callback A {@link GetMovieListUseCase.Callback} used to notify the client.
    */
-  void execute(Callback callback);
+  void execute(int page, Callback callback);
 }

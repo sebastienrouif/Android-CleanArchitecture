@@ -9,7 +9,9 @@ import com.fernandocejas.android10.sample.domain.exception.ErrorBundle;
 import com.fernandocejas.android10.sample.domain.executor.PostExecutionThread;
 import com.fernandocejas.android10.sample.domain.executor.ThreadExecutor;
 import com.fernandocejas.android10.sample.domain.repository.MovieRepository;
+
 import java.util.Collection;
+
 import javax.inject.Inject;
 
 /**
@@ -18,65 +20,73 @@ import javax.inject.Inject;
  */
 public class GetMovieListUseCaseImpl implements GetMovieListUseCase {
 
-  private final MovieRepository movieRepository;
-  private final ThreadExecutor threadExecutor;
-  private final PostExecutionThread postExecutionThread;
+    private final MovieRepository movieRepository;
+    private final ThreadExecutor threadExecutor;
+    private final PostExecutionThread postExecutionThread;
 
-  private Callback callback;
+    private Callback callback;
+    private int page;
 
-  /**
-   * Constructor of the class.
-   *
-   * @param movieRepository A {@link MovieRepository} as a source for retrieving data.
-   * @param threadExecutor {@link ThreadExecutor} used to execute this use case in a background
-   * thread.
-   * @param postExecutionThread {@link PostExecutionThread} used to post updates when the use case
-   * has been executed.
-   */
-  @Inject
-  public GetMovieListUseCaseImpl(MovieRepository movieRepository, ThreadExecutor threadExecutor,
-                                 PostExecutionThread postExecutionThread) {
-    this.movieRepository = movieRepository;
-    this.threadExecutor = threadExecutor;
-    this.postExecutionThread = postExecutionThread;
-  }
-
-  @Override public void execute(Callback callback) {
-    if (callback == null) {
-      throw new IllegalArgumentException("Interactor callback cannot be null!!!");
+    /**
+     * Constructor of the class.
+     *
+     * @param movieRepository     A {@link MovieRepository} as a source for retrieving data.
+     * @param threadExecutor      {@link ThreadExecutor} used to execute this use case in a background
+     *                            thread.
+     * @param postExecutionThread {@link PostExecutionThread} used to post updates when the use case
+     *                            has been executed.
+     */
+    @Inject
+    public GetMovieListUseCaseImpl(MovieRepository movieRepository, ThreadExecutor threadExecutor,
+                                   PostExecutionThread postExecutionThread) {
+        this.movieRepository = movieRepository;
+        this.threadExecutor = threadExecutor;
+        this.postExecutionThread = postExecutionThread;
     }
-    this.callback = callback;
-    this.threadExecutor.execute(this);
-  }
 
-  @Override public void run() {
-    this.movieRepository.getMovieList(this.repositoryCallback);
-  }
-
-  private final MovieRepository.MovieListCallback repositoryCallback =
-      new MovieRepository.MovieListCallback() {
-        @Override public void onMovieListLoaded(Collection<Movie> moviesCollection) {
-          notifyGetMovieListSuccessfully(moviesCollection);
+    @Override
+    public void execute(int page, Callback callback) {
+        if (callback == null) {
+            throw new IllegalArgumentException("Interactor callback cannot be null!!!");
         }
+        this.callback = callback;
+        this.threadExecutor.execute(this);
+        this.page = page;
+    }
 
-        @Override public void onError(ErrorBundle errorBundle) {
-          notifyError(errorBundle);
-        }
-      };
+    @Override
+    public void run() {
+        this.movieRepository.getMovieList(page, this.repositoryCallback);
+    }
 
-  private void notifyGetMovieListSuccessfully(final Collection<Movie> moviesCollection) {
-    this.postExecutionThread.post(new Runnable() {
-      @Override public void run() {
-        callback.onMovieListLoaded(moviesCollection);
-      }
-    });
-  }
+    private final MovieRepository.MovieListCallback repositoryCallback =
+            new MovieRepository.MovieListCallback() {
+                @Override
+                public void onMovieListLoaded(Collection<Movie> moviesCollection) {
+                    notifyGetMovieListSuccessfully(moviesCollection);
+                }
 
-  private void notifyError(final ErrorBundle errorBundle) {
-    this.postExecutionThread.post(new Runnable() {
-      @Override public void run() {
-        callback.onError(errorBundle);
-      }
-    });
-  }
+                @Override
+                public void onError(ErrorBundle errorBundle) {
+                    notifyError(errorBundle);
+                }
+            };
+
+    private void notifyGetMovieListSuccessfully(final Collection<Movie> moviesCollection) {
+        this.postExecutionThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onMovieListLoaded(moviesCollection);
+            }
+        });
+    }
+
+    private void notifyError(final ErrorBundle errorBundle) {
+        this.postExecutionThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onError(errorBundle);
+            }
+        });
+    }
 }

@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.fernandocejas.android10.sample.presentation.presenter.MovieListPresen
 import com.fernandocejas.android10.sample.presentation.view.MovieListView;
 import com.fernandocejas.android10.sample.presentation.view.adapter.MoviesAdapter;
 import com.fernandocejas.android10.sample.presentation.view.adapter.MoviesLayoutManager;
+import com.fernandocejas.android10.sample.presentation.view.interaction.EndlessRecyclerOnScrollListener;
+
 import java.util.Collection;
 import javax.inject.Inject;
 
@@ -71,8 +74,8 @@ public class MovieListFragment extends BaseFragment implements MovieListView {
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    this.initialize();
-    this.loadMovieList();
+    initialize();
+    loadMovieList();
   }
 
   @Override public void onResume() {
@@ -91,18 +94,24 @@ public class MovieListFragment extends BaseFragment implements MovieListView {
   }
 
   private void setupUI() {
-    this.moviesLayoutManager = new MoviesLayoutManager(getActivity());
-    this.rv_movies.setLayoutManager(moviesLayoutManager);
+    moviesLayoutManager = new MoviesLayoutManager(getActivity());
+    rv_movies.setLayoutManager(moviesLayoutManager);
+    rv_movies.setOnScrollListener(new EndlessRecyclerOnScrollListener(moviesLayoutManager) {
+          @Override
+          public void onLoadMore(int current_page) {
+              movieListPresenter.loadMore(current_page);
+          }
+      });
   }
 
   @Override public void showLoading() {
-    this.rl_progress.setVisibility(View.VISIBLE);
-    this.getActivity().setProgressBarIndeterminateVisibility(true);
+    rl_progress.setVisibility(View.VISIBLE);
+    getActivity().setProgressBarIndeterminateVisibility(true);
   }
 
   @Override public void hideLoading() {
-    this.rl_progress.setVisibility(View.GONE);
-    this.getActivity().setProgressBarIndeterminateVisibility(false);
+    rl_progress.setVisibility(View.GONE);
+    getActivity().setProgressBarIndeterminateVisibility(false);
   }
 
   @Override public void showRetry() {
