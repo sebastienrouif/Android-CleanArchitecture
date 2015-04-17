@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
@@ -36,16 +37,17 @@ public class MovieListPresenterTest extends AndroidTestCase {
     MockitoAnnotations.initMocks(this);
     movieListPresenter = new MovieListPresenter(mockGetMovieListUseCase,
         mockMovieModelDataMapper);
+    movieListPresenter.setView(mockMovieListView);
   }
 
   public void testMovieListPresenterInitialize() {
-    doNothing().when(mockGetMovieListUseCase).execute(any(GetMovieListUseCase.Callback.class));
+    doNothing().when(mockGetMovieListUseCase).execute(anyInt(), any(GetMovieListUseCase.Callback.class));
     given(mockMovieListView.getContext()).willReturn(mockContext);
 
     movieListPresenter.initialize();
 
     verify(mockMovieListView).hideRetry();
     verify(mockMovieListView).showLoading();
-    verify(mockGetMovieListUseCase).execute(any(GetMovieListUseCase.Callback.class));
+    verify(mockGetMovieListUseCase).execute(anyInt(),any(GetMovieListUseCase.Callback.class));
   }
 }

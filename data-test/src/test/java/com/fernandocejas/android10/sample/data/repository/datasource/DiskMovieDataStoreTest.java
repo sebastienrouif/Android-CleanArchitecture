@@ -73,6 +73,6 @@ public class DiskMovieDataStoreTest extends ApplicationTestCase {
   @Test
   public void testGetMovieEntityListUnsupported() {
     expectedException.expect(UnsupportedOperationException.class);
-    diskMovieDataStore.getMoviesEntityList(null);
+    diskMovieDataStore.getMoviesEntityList(0, null);
   }
 }

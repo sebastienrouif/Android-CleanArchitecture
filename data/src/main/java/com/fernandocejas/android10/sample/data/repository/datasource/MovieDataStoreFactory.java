@@ -6,7 +6,6 @@ package com.fernandocejas.android10.sample.data.repository.datasource;
 
 import android.content.Context;
 import com.fernandocejas.android10.sample.data.cache.MovieCache;
-import com.fernandocejas.android10.sample.data.entity.mapper.MovieEntityJsonMapper;
 import com.fernandocejas.android10.sample.data.net.RestApi;
 import com.fernandocejas.android10.sample.data.net.RestApiImpl;
 import javax.inject.Inject;
@@ -49,8 +48,7 @@ public class MovieDataStoreFactory {
    * Create {@link MovieDataStore} to retrieve data from the Cloud.
    */
   public MovieDataStore createCloudDataStore() {
-    MovieEntityJsonMapper movieEntityJsonMapper = new MovieEntityJsonMapper();
-    RestApi restApi = new RestApiImpl(this.context, movieEntityJsonMapper);
+    RestApi restApi = new RestApiImpl(this.context);
 
     return new CloudMovieDataStore(restApi, this.movieCache);
   }

@@ -8,12 +8,14 @@ import com.fernandocejas.android10.sample.data.ApplicationTestCase;
 import com.fernandocejas.android10.sample.data.cache.serializer.JsonSerializer;
 import com.fernandocejas.android10.sample.data.entity.MovieEntity;
 import com.fernandocejas.android10.sample.domain.executor.ThreadExecutor;
-import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
+
+import java.io.File;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -22,36 +24,36 @@ import static org.mockito.Mockito.verify;
 
 public class MovieCacheTest extends ApplicationTestCase {
 
-  private static final int FAKE_USER_ID = 123;
+    private static final int FAKE_MOVIE_ID = 123;
 
-  private MovieCache movieCache;
+    private MovieCache movieCache;
 
-  @Mock
-  private JsonSerializer mockJsonSerializer;
-  @Mock
-  private FileManager mockFileManager;
-  @Mock
-  private ThreadExecutor mockThreadExecutor;
-  @Mock
-  private MovieCache.MovieCacheCallback mockMovieCacheCallback;
-  @Mock
-  private MovieEntity mockMovieEntity;
+    @Mock
+    private JsonSerializer mockJsonSerializer;
+    @Mock
+    private FileManager mockFileManager;
+    @Mock
+    private ThreadExecutor mockThreadExecutor;
+    @Mock
+    private MovieCache.MovieCacheCallback mockMovieCacheCallback;
+    @Mock
+    private MovieEntity mockMovieEntity;
 
-  @Before
-  public void setUp() {
-    MockitoAnnotations.initMocks(this);
-    movieCache = new MovieCacheImpl(Robolectric.application, mockJsonSerializer,
-        mockFileManager, mockThreadExecutor);
-  }
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        movieCache = new MovieCacheImpl(Robolectric.application, mockJsonSerializer,
+                mockFileManager, mockThreadExecutor);
+    }
 
-  @Test
-  public void testGetFromCacheHappyCase() {
-    given(mockJsonSerializer.deserialize(anyString())).willReturn(mockMovieEntity);
+    @Test
+    public void testGetFromCacheHappyCase() {
+        given(mockJsonSerializer.deserialize(anyString(), any(Class.class))).willReturn(mockMovieEntity);
 
-    movieCache.get(FAKE_USER_ID, mockMovieCacheCallback);
+        movieCache.get(FAKE_MOVIE_ID, mockMovieCacheCallback);
 
-    verify(mockFileManager).readFileContent(any(File.class));
-    verify(mockJsonSerializer).deserialize(anyString());
-    verify(mockMovieCacheCallback).onMovieEntityLoaded(mockMovieEntity);
-  }
+        verify(mockFileManager).readFileContent(any(File.class));
+        verify(mockJsonSerializer).deserialize(anyString(), any(Class.class));
+        verify(mockMovieCacheCallback).onMovieEntityLoaded(mockMovieEntity);
+    }
 }

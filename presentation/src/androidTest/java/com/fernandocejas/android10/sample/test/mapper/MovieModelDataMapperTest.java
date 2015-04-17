@@ -19,8 +19,8 @@ import static org.mockito.Mockito.mock;
 
 public class MovieModelDataMapperTest extends TestCase {
 
-  private static final int FAKE_USER_ID = 123;
-  private static final String FAKE_FULLNAME = "Tony Stark";
+  private static final int FAKE_MOVIE_ID = 123;
+  private static final String FAKE_TITLE = "Tony Stark";
 
   private MovieModelDataMapper movieModelDataMapper;
 
@@ -34,8 +34,8 @@ public class MovieModelDataMapperTest extends TestCase {
     MovieModel movieModel = movieModelDataMapper.transform(movie);
 
     assertThat(movieModel, is(instanceOf(MovieModel.class)));
-    assertThat(movieModel.getMovieId(), is(FAKE_USER_ID));
-    assertThat(movieModel.getFullName(), is(FAKE_FULLNAME));
+    assertThat(movieModel.getId(), is(FAKE_MOVIE_ID));
+    assertThat(movieModel.getTitle(), is(FAKE_TITLE));
   }
 
   public void testTransformMovieCollection() {
@@ -54,8 +54,9 @@ public class MovieModelDataMapperTest extends TestCase {
   }
 
   private Movie createFakeMovie() {
-    Movie movie = new Movie(FAKE_USER_ID);
-    movie.setFullName(FAKE_FULLNAME);
+    Movie movie = new Movie();
+    movie.setTitle(FAKE_TITLE);
+    movie.setId(FAKE_MOVIE_ID);
 
     return movie;
   }

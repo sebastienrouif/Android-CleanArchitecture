@@ -21,7 +21,7 @@ import static org.mockito.Mockito.verify;
 
 public class MovieDataStoreFactoryTest extends ApplicationTestCase {
 
-  private static final int FAKE_USER_ID = 11;
+  private static final int FAKE_MOVIE_ID = 11;
 
   private MovieDataStoreFactory movieDataStoreFactory;
 
@@ -37,24 +37,24 @@ public class MovieDataStoreFactoryTest extends ApplicationTestCase {
 
   @Test
   public void testCreateDiskDataStore() {
-    given(mockMovieCache.isCached(FAKE_USER_ID)).willReturn(true);
+    given(mockMovieCache.isCached(FAKE_MOVIE_ID)).willReturn(true);
     given(mockMovieCache.isExpired()).willReturn(false);
 
-    MovieDataStore movieDataStore = movieDataStoreFactory.create(FAKE_USER_ID);
+    MovieDataStore movieDataStore = movieDataStoreFactory.create(FAKE_MOVIE_ID);
 
     assertThat(movieDataStore, is(notNullValue()));
     assertThat(movieDataStore, is(instanceOf(DiskMovieDataStore.class)));
 
-    verify(mockMovieCache).isCached(FAKE_USER_ID);
+    verify(mockMovieCache).isCached(FAKE_MOVIE_ID);
     verify(mockMovieCache).isExpired();
   }
 
   @Test
   public void testCreateCloudDataStore() {
     given(mockMovieCache.isExpired()).willReturn(true);
-    given(mockMovieCache.isCached(FAKE_USER_ID)).willReturn(false);
+    given(mockMovieCache.isCached(FAKE_MOVIE_ID)).willReturn(false);
 
-    MovieDataStore movieDataStore = movieDataStoreFactory.create(FAKE_USER_ID);
+    MovieDataStore movieDataStore = movieDataStoreFactory.create(FAKE_MOVIE_ID);
 
     assertThat(movieDataStore, is(notNullValue()));
     assertThat(movieDataStore, is(instanceOf(CloudMovieDataStore.class)));

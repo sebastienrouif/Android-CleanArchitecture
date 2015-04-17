@@ -6,10 +6,12 @@ package com.fernandocejas.android10.sample.test.presenter;
 
 import android.content.Context;
 import android.test.AndroidTestCase;
+
 import com.fernandocejas.android10.sample.domain.interactor.GetMovieDetailsUseCase;
 import com.fernandocejas.android10.sample.presentation.mapper.MovieModelDataMapper;
 import com.fernandocejas.android10.sample.presentation.presenter.MovieDetailsPresenter;
 import com.fernandocejas.android10.sample.presentation.view.MovieDetailsView;
+
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -21,35 +23,37 @@ import static org.mockito.Mockito.verify;
 
 public class MovieDetailsPresenterTest extends AndroidTestCase {
 
-  private static final int FAKE_USER_ID = 123;
+    private static final int FAKE_USER_ID = 123;
 
-  private MovieDetailsPresenter movieDetailsPresenter;
+    private MovieDetailsPresenter movieDetailsPresenter;
 
-  @Mock
-  private Context mockContext;
-  @Mock
-  private MovieDetailsView mockMovieDetailsView;
-  @Mock
-  private GetMovieDetailsUseCase mockGetMovieDetailsUseCase;
-  @Mock
-  private MovieModelDataMapper mockMovieModelDataMapper;
+    @Mock
+    private Context mockContext;
+    @Mock
+    private MovieDetailsView mockMovieDetailsView;
+    @Mock
+    private GetMovieDetailsUseCase mockGetMovieDetailsUseCase;
+    @Mock
+    private MovieModelDataMapper mockMovieModelDataMapper;
 
-  @Override protected void setUp() throws Exception {
-    super.setUp();
-    MockitoAnnotations.initMocks(this);
-    movieDetailsPresenter = new MovieDetailsPresenter(mockGetMovieDetailsUseCase,
-        mockMovieModelDataMapper);
-  }
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        MockitoAnnotations.initMocks(this);
+        movieDetailsPresenter = new MovieDetailsPresenter(mockGetMovieDetailsUseCase,
+                mockMovieModelDataMapper);
+        movieDetailsPresenter.setView(mockMovieDetailsView);
+    }
 
-  public void testMovieDetailsPresenterInitialize() {
-    doNothing().when(mockGetMovieDetailsUseCase)
-        .execute(anyInt(), any(GetMovieDetailsUseCase.Callback.class));
-    given(mockMovieDetailsView.getContext()).willReturn(mockContext);
+    public void testMovieDetailsPresenterInitialize() {
+        doNothing().when(mockGetMovieDetailsUseCase)
+                .execute(anyInt(), any(GetMovieDetailsUseCase.Callback.class));
+        given(mockMovieDetailsView.getContext()).willReturn(mockContext);
 
-    movieDetailsPresenter.initialize(FAKE_USER_ID);
+        movieDetailsPresenter.initialize(FAKE_USER_ID);
 
-    verify(mockMovieDetailsView).hideRetry();
-    verify(mockMovieDetailsView).showLoading();
-    verify(mockGetMovieDetailsUseCase).execute(anyInt(), any(GetMovieDetailsUseCase.Callback.class));
-  }
+        verify(mockMovieDetailsView).hideRetry();
+        verify(mockMovieDetailsView).showLoading();
+        verify(mockGetMovieDetailsUseCase).execute(anyInt(), any(GetMovieDetailsUseCase.Callback.class));
+    }
 }

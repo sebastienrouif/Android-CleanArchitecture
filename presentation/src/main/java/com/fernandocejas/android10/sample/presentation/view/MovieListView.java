@@ -13,11 +13,11 @@ import java.util.Collection;
  */
 public interface MovieListView extends LoadDataView {
   /**
-   * Render a movie list in the UI.
+   * Adds a movie list in the UI.
    *
    * @param movieModelCollection The collection of {@link MovieModel} that will be shown.
    */
-  void renderMovieList(Collection<MovieModel> movieModelCollection);
+  void addMovieList(Collection<MovieModel> movieModelCollection);
 
   /**
    * View a {@link MovieModel} profile/details.

@@ -6,6 +6,7 @@ package com.fernandocejas.android10.sample.data.cache.serializer;
 
 import com.fernandocejas.android10.sample.data.ApplicationTestCase;
 import com.fernandocejas.android10.sample.data.entity.MovieEntity;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,39 +16,45 @@ import static org.junit.Assert.assertThat;
 
 public class JsonSerializerTest extends ApplicationTestCase {
 
-  private static final String JSON_RESPONSE = "{\n"
-      + "    \"id\": 1,\n"
-      + "    \"cover_url\": \"http://www.android10.org/myapi/cover_1.jpg\",\n"
-      + "    \"full_name\": \"Simon Hill\",\n"
-      + "    \"description\": \"Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.\\n\\nInteger tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.\\n\\nPraesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.\",\n"
-      + "    \"followers\": 7484,\n"
-      + "    \"email\": \"jcooper@babbleset.edu\"\n"
-      + "}";
+    private static final String JSON_MOVIE_RESPONSE = "{ " +
+            "adult: false," +
+            "backdrop_path: \"/c1OSRvorPXvGtFka7mgV6Jcw6jd.jpg\"," +
+            "id: 168259," +
+            "original_title: \"Furious 7\"," +
+            "release_date: \"2015-04-03\"," +
+            "poster_path: \"/dCgm7efXDmiABSdWDHBDBx2jwmn.jpg\"," +
+            "popularity: 36.2784739100617," +
+            "title: \"Furious 7\"," +
+            "video: false," +
+            "vote_average: 7.7," +
+            "vote_count: 317" +
+            "}";
 
-  private JsonSerializer jsonSerializer;
+    private JsonSerializer jsonSerializer;
 
-  @Before
-  public void setUp() {
-    jsonSerializer = new JsonSerializer();
-  }
+    @Before
+    public void setUp() {
+        jsonSerializer = new JsonSerializer();
+    }
 
-  @Test
-  public void testSerializeHappyCase() {
-    MovieEntity movieEntityOne = jsonSerializer.deserialize(JSON_RESPONSE);
-    String jsonString = jsonSerializer.serialize(movieEntityOne);
-    MovieEntity movieEntityTwo = jsonSerializer.deserialize(jsonString);
+    @Test
+    public void testSerializeHappyCase() {
+        MovieEntity movieEntityOne = jsonSerializer.deserialize(JSON_MOVIE_RESPONSE, MovieEntity.class);
+        String jsonString = jsonSerializer.serialize(movieEntityOne);
+        MovieEntity movieEntityTwo = jsonSerializer.deserialize(jsonString, MovieEntity.class);
 
-    assertThat(movieEntityOne.getMovieId(), is(movieEntityTwo.getMovieId()));
-    assertThat(movieEntityOne.getFullname(), is(equalTo(movieEntityTwo.getFullname())));
-    assertThat(movieEntityOne.getFollowers(), is(movieEntityTwo.getFollowers()));
-  }
+        //TODO test all fields
+        assertThat(movieEntityOne.getId(), is(movieEntityTwo.getId()));
+        assertThat(movieEntityOne.getTitle(), is(equalTo(movieEntityTwo.getTitle())));
+        assertThat(movieEntityOne.getPosterPath(), is(movieEntityTwo.getPosterPath()));
+    }
 
-  @Test
-  public void testDesearializeHappyCase() {
-    MovieEntity movieEntity = jsonSerializer.deserialize(JSON_RESPONSE);
+    @Test
+    public void testDesearializeHappyCase() {
+        MovieEntity movieEntity = jsonSerializer.deserialize(JSON_MOVIE_RESPONSE, MovieEntity.class);
 
-    assertThat(movieEntity.getMovieId(), is(1));
-    assertThat(movieEntity.getFullname(), is("Simon Hill"));
-    assertThat(movieEntity.getFollowers(), is(7484));
-  }
+        assertThat(movieEntity.getId(), is(168259));
+        assertThat(movieEntity.getTitle(), is("Furious 7"));
+        assertThat(movieEntity.getPosterPath(), is("/dCgm7efXDmiABSdWDHBDBx2jwmn.jpg"));
+    }
 }

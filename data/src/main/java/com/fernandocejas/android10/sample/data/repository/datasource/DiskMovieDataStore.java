@@ -28,7 +28,7 @@ public class DiskMovieDataStore implements MovieDataStore {
    *
    * @param movieListCallback A {@link MovieListCallback} used for notifying clients.
    */
-  @Override public void getMoviesEntityList(MovieListCallback movieListCallback) {
+  @Override public void getMoviesEntityList(int page, MovieListCallback movieListCallback) {
     //TODO: implement simple cache for storing/retrieving collections of movies.
     throw new UnsupportedOperationException("Operation is not available!!!");
   }

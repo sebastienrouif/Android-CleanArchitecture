@@ -5,12 +5,11 @@
 package com.fernandocejas.android10.sample.domain.interactor;
 
 import com.fernandocejas.android10.sample.domain.Movie;
+import com.fernandocejas.android10.sample.domain.PaginatedMovies;
 import com.fernandocejas.android10.sample.domain.exception.ErrorBundle;
 import com.fernandocejas.android10.sample.domain.executor.PostExecutionThread;
 import com.fernandocejas.android10.sample.domain.executor.ThreadExecutor;
 import com.fernandocejas.android10.sample.domain.repository.MovieRepository;
-
-import java.util.Collection;
 
 import javax.inject.Inject;
 
@@ -62,8 +61,8 @@ public class GetMovieListUseCaseImpl implements GetMovieListUseCase {
     private final MovieRepository.MovieListCallback repositoryCallback =
             new MovieRepository.MovieListCallback() {
                 @Override
-                public void onMovieListLoaded(Collection<Movie> moviesCollection) {
-                    notifyGetMovieListSuccessfully(moviesCollection);
+                public void onMovieListLoaded(PaginatedMovies paginatedMovies) {
+                    notifyGetMovieListSuccessfully(paginatedMovies);
                 }
 
                 @Override
@@ -72,11 +71,11 @@ public class GetMovieListUseCaseImpl implements GetMovieListUseCase {
                 }
             };
 
-    private void notifyGetMovieListSuccessfully(final Collection<Movie> moviesCollection) {
+    private void notifyGetMovieListSuccessfully(final PaginatedMovies paginatedMovies) {
         this.postExecutionThread.post(new Runnable() {
             @Override
             public void run() {
-                callback.onMovieListLoaded(moviesCollection);
+                callback.onMovieListLoaded(paginatedMovies);
             }
         });
     }

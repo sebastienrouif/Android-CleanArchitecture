@@ -2,6 +2,7 @@ package com.fernandocejas.android10.sample.presentation.view.interaction;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
     public static String TAG = EndlessRecyclerOnScrollListener.class.getSimpleName();
@@ -31,6 +32,7 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
             if (totalItemCount > previousTotal) {
                 loading = false;
                 previousTotal = totalItemCount;
+                Log.d(TAG, "totalItemCount " + totalItemCount);
             }
         }
         if (!loading && (totalItemCount - visibleItemCount)

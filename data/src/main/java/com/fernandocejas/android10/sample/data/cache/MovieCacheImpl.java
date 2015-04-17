@@ -77,8 +77,8 @@ public class MovieCacheImpl implements MovieCache {
    */
   @Override public synchronized void put(MovieEntity movieEntity) {
     if (movieEntity != null) {
-      File movieEntitiyFile = this.buildFile(movieEntity.getMovieId());
-      if (!isCached(movieEntity.getMovieId())) {
+      File movieEntitiyFile = this.buildFile(movieEntity.getId());
+      if (!isCached(movieEntity.getId())) {
         String jsonString = this.serializer.serialize(movieEntity);
         this.executeAsynchronously(new CacheWriter(this.fileManager, movieEntitiyFile,
             jsonString));

@@ -1,82 +1,310 @@
-/**
- * Copyright (C) 2014 android10.org. All rights reserved.
- * @author Fernando Cejas (the android10 coder)
- */
 package com.fernandocejas.android10.sample.domain;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Class that represents a Movie in the domain layer.
  */
 public class Movie {
 
-  private final int movieId;
+    @SerializedName("adult")
+    @Expose
+    private boolean adult;
 
-  public Movie(int movieId) {
-    this.movieId = movieId;
-  }
+    @SerializedName("backdrop_path")
+    @Expose
+    private String backdropPath;
 
-  private String coverUrl;
-  private String fullName;
-  private String email;
-  private String description;
-  private int followers;
+//    @SerializedName("belongs_to_collection")
+//    @Expose
+//    private BelongsToCollection belongsToCollection;
 
-  public int getMovieId() {
-    return movieId;
-  }
+    @SerializedName("budget")
+    @Expose
+    private int budget;
 
-  public String getCoverUrl() {
-    return coverUrl;
-  }
+//    @SerializedName("genres")
+//    @Expose
+//    private List<Genre> genres = new ArrayList<Genre>();
 
-  public void setCoverUrl(String coverUrl) {
-    this.coverUrl = coverUrl;
-  }
+    @SerializedName("homepage")
+    @Expose
+    private String homepage;
 
-  public String getFullName() {
-    return fullName;
-  }
+    @SerializedName("id")
+    @Expose
+    private int id;
 
-  public void setFullName(String fullName) {
-    this.fullName = fullName;
-  }
+    @SerializedName("imdb_id")
+    @Expose
+    private String imdbId;
 
-  public String getEmail() {
-    return email;
-  }
+    @SerializedName("original_language")
+    @Expose
+    private String originalLanguage;
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    @SerializedName("original_title")
+    @Expose
+    private String originalTitle;
 
-  public String getDescription() {
-    return description;
-  }
+    @SerializedName("overview")
+    @Expose
+    private String overview;
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    @SerializedName("popularity")
+    @Expose
+    private float popularity;
 
-  public int getFollowers() {
-    return followers;
-  }
+    @SerializedName("poster_path")
+    @Expose
+    private String posterPath;
 
-  public void setFollowers(int followers) {
-    this.followers = followers;
-  }
+//    @SerializedName("production_companies")
+//    @Expose
+//    private List<ProductionCompany> productionCompanies = new ArrayList<ProductionCompany>();
 
-  @Override public String toString() {
-    StringBuilder stringBuilder = new StringBuilder();
+//    @SerializedName("production_countries")
+//    @Expose
+//    private List<ProductionCountry> productionCountries = new ArrayList<ProductionCountry>();
 
-    stringBuilder.append("***** Movie Details *****\n");
-    stringBuilder.append("id=" + this.getMovieId() + "\n");
-    stringBuilder.append("cover url=" + this.getCoverUrl() + "\n");
-    stringBuilder.append("fullname=" + this.getFullName() + "\n");
-    stringBuilder.append("email=" + this.getEmail() + "\n");
-    stringBuilder.append("description=" + this.getDescription() + "\n");
-    stringBuilder.append("followers=" + this.getFollowers() + "\n");
-    stringBuilder.append("*******************************");
+    @SerializedName("release_date")
+    @Expose
+    private String releaseDate;
 
-    return stringBuilder.toString();
-  }
+    @SerializedName("revenue")
+    @Expose
+    private int revenue;
+
+    @SerializedName("runtime")
+    @Expose
+    private int runtime;
+
+//    @SerializedName("spoken_languages")
+//    @Expose
+//    private List<SpokenLanguage> spokenLanguages = new ArrayList<SpokenLanguage>();
+
+    @SerializedName("status")
+    @Expose
+    private String status;
+
+    @SerializedName("tagline")
+    @Expose
+    private String tagline;
+
+    @SerializedName("title")
+    @Expose
+    private String title;
+
+    @SerializedName("video")
+    @Expose
+    private boolean video;
+
+    @SerializedName("vote_average")
+    @Expose
+    private float voteAverage;
+
+    @SerializedName("vote_count")
+    @Expose
+    private int voteCount;
+
+    public boolean isAdult() {
+        return adult;
+    }
+
+    public void setAdult(boolean adult) {
+        this.adult = adult;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
+    }
+
+//    public BelongsToCollection getBelongsToCollection() {
+//        return belongsToCollection;
+//    }
+//
+//    public void setBelongsToCollection(BelongsToCollection belongsToCollection) {
+//        this.belongsToCollection = belongsToCollection;
+//    }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public void setBudget(int budget) {
+        this.budget = budget;
+    }
+
+//    public List<Genre> getGenres() {
+//        return genres;
+//    }
+//
+//    public void setGenres(List<Genre> genres) {
+//        this.genres = genres;
+//    }
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(String homepage) {
+        this.homepage = homepage;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public String getOriginalLanguage() {
+        return originalLanguage;
+    }
+
+    public void setOriginalLanguage(String originalLanguage) {
+        this.originalLanguage = originalLanguage;
+    }
+
+    public String getOriginalTitle() {
+        return originalTitle;
+    }
+
+    public void setOriginalTitle(String originalTitle) {
+        this.originalTitle = originalTitle;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public float getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(float popularity) {
+        this.popularity = popularity;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
+//    public List<ProductionCompany> getProductionCompanies() {
+//        return productionCompanies;
+//    }
+//
+//    public void setProductionCompanies(List<ProductionCompany> productionCompanies) {
+//        this.productionCompanies = productionCompanies;
+//    }
+//
+//    public List<ProductionCountry> getProductionCountries() {
+//        return productionCountries;
+//    }
+//
+//    public void setProductionCountries(List<ProductionCountry> productionCountries) {
+//        this.productionCountries = productionCountries;
+//    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public int getRevenue() {
+        return revenue;
+    }
+
+    public void setRevenue(int revenue) {
+        this.revenue = revenue;
+    }
+
+    public int getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(int runtime) {
+        this.runtime = runtime;
+    }
+
+//    public List<SpokenLanguage> getSpokenLanguages() {
+//        return spokenLanguages;
+//    }
+//
+//    public void setSpokenLanguages(List<SpokenLanguage> spokenLanguages) {
+//        this.spokenLanguages = spokenLanguages;
+//    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public boolean isVideo() {
+        return video;
+    }
+
+    public void setVideo(boolean video) {
+        this.video = video;
+    }
+
+    public float getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(float voteAverage) {
+        this.voteAverage = voteAverage;
+    }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
+    }
 }

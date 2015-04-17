@@ -20,6 +20,7 @@ dependencies {
   provided domainDependencies.daggerCompiler
   provided domainDependencies.javaxAnnotation
 
+  compile 'com.google.code.gson:gson:2.3.1'
   compile domainDependencies.dagger
   compile domainDependencies.rxJava
 

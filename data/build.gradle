@@ -38,6 +38,7 @@ dependencies {
 
   compile project(':domain')
   compile 'com.jakewharton:disklrucache:2.0.2'
+  compile 'com.squareup.retrofit:retrofit:1.9.0'
 
   apt dataDependencies.daggerCompiler
   compile dataDependencies.dagger

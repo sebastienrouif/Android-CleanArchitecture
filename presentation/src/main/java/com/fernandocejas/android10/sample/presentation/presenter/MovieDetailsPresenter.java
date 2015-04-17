@@ -5,6 +5,7 @@
 package com.fernandocejas.android10.sample.presentation.presenter;
 
 import android.support.annotation.NonNull;
+
 import com.fernandocejas.android10.sample.domain.Movie;
 import com.fernandocejas.android10.sample.domain.exception.ErrorBundle;
 import com.fernandocejas.android10.sample.domain.interactor.GetMovieDetailsUseCase;
@@ -13,6 +14,7 @@ import com.fernandocejas.android10.sample.presentation.internal.di.PerActivity;
 import com.fernandocejas.android10.sample.presentation.mapper.MovieModelDataMapper;
 import com.fernandocejas.android10.sample.presentation.model.MovieModel;
 import com.fernandocejas.android10.sample.presentation.view.MovieDetailsView;
+
 import javax.inject.Inject;
 
 /**

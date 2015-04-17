@@ -7,6 +7,7 @@ package com.fernandocejas.android10.sample.presentation.presenter;
 import android.support.annotation.NonNull;
 
 import com.fernandocejas.android10.sample.domain.Movie;
+import com.fernandocejas.android10.sample.domain.PaginatedMovies;
 import com.fernandocejas.android10.sample.domain.exception.ErrorBundle;
 import com.fernandocejas.android10.sample.domain.interactor.GetMovieListUseCase;
 import com.fernandocejas.android10.sample.presentation.exception.ErrorMessageFactory;
@@ -63,7 +64,7 @@ public class MovieListPresenter implements Presenter {
     private void loadMovieList() {
         hideViewRetry();
         showViewLoading();
-        getMovieList(0);
+        getMovieList(1);
     }
 
     public void onMovieClicked(MovieModel movieModel) {
@@ -94,8 +95,8 @@ public class MovieListPresenter implements Presenter {
 
     private void showMoviesCollectionInView(Collection<Movie> moviesCollection) {
         final Collection<MovieModel> movieModelsCollection =
-                this.movieModelDataMapper.transform(moviesCollection);
-        this.viewListView.renderMovieList(movieModelsCollection);
+                movieModelDataMapper.transform(moviesCollection);
+        viewListView.addMovieList(movieModelsCollection);
     }
 
     private void getMovieList(int page) {
@@ -104,8 +105,9 @@ public class MovieListPresenter implements Presenter {
 
     private final GetMovieListUseCase.Callback movieListCallback = new GetMovieListUseCase.Callback() {
         @Override
-        public void onMovieListLoaded(Collection<Movie> moviesCollection) {
-            MovieListPresenter.this.showMoviesCollectionInView(moviesCollection);
+        public void onMovieListLoaded(PaginatedMovies paginatedMovies) {
+
+            MovieListPresenter.this.showMoviesCollectionInView(paginatedMovies.getMovies());
             MovieListPresenter.this.hideViewLoading();
         }
 

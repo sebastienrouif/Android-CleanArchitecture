@@ -5,7 +5,7 @@
 package com.fernandocejas.android10.sample.data.repository.datasource;
 
 import com.fernandocejas.android10.sample.data.entity.MovieEntity;
-import java.util.Collection;
+import com.fernandocejas.android10.sample.data.entity.PaginatedMoviesEntity;
 
 /**
  * Interface that represents a data store from where data is retrieved.
@@ -16,7 +16,7 @@ public interface MovieDataStore {
    * occurred.
    */
   interface MovieListCallback {
-    void onMovieListLoaded(Collection<MovieEntity> moviesCollection);
+    void onMovieListLoaded(PaginatedMoviesEntity paginatedMoviesEntity);
 
     void onError(Exception exception);
   }
@@ -36,7 +36,7 @@ public interface MovieDataStore {
    *
    * @param movieListCallback A {@link MovieListCallback} used for notifying clients.
    */
-  void getMoviesEntityList(MovieListCallback movieListCallback);
+  void getMoviesEntityList(int page, MovieListCallback movieListCallback);
 
   /**
    * Get a {@link MovieEntity} by its id.

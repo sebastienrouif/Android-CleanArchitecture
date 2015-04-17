@@ -5,7 +5,11 @@
 package com.fernandocejas.android10.sample.data.entity.mapper;
 
 import com.fernandocejas.android10.sample.data.entity.MovieEntity;
+import com.fernandocejas.android10.sample.data.entity.PaginatedMoviesEntity;
 import com.fernandocejas.android10.sample.domain.Movie;
+import com.fernandocejas.android10.sample.domain.PaginatedMovies;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -31,12 +35,8 @@ public class MovieEntityDataMapper {
   public Movie transform(MovieEntity movieEntity) {
     Movie movie = null;
     if (movieEntity != null) {
-      movie = new Movie(movieEntity.getMovieId());
-      movie.setCoverUrl(movieEntity.getCoverUrl());
-      movie.setFullName(movieEntity.getFullname());
-      movie.setDescription(movieEntity.getDescription());
-      movie.setFollowers(movieEntity.getFollowers());
-      movie.setEmail(movieEntity.getEmail());
+      Gson gson = new Gson();
+      movie = gson.fromJson(gson.toJson(movieEntity), Movie.class);
     }
 
     return movie;
@@ -45,19 +45,16 @@ public class MovieEntityDataMapper {
   /**
    * Transform a Collection of {@link MovieEntity} into a Collection of {@link Movie}.
    *
-   * @param movieEntityCollection Object Collection to be transformed.
+   * @param paginatedMoviesEntity
    * @return {@link Movie} if valid {@link MovieEntity} otherwise null.
    */
-  public Collection<Movie> transform(Collection<MovieEntity> movieEntityCollection) {
-    List<Movie> movieList = new ArrayList<Movie>(20);
-    Movie movie;
-    for (MovieEntity movieEntity : movieEntityCollection) {
-      movie = transform(movieEntity);
-      if (movie != null) {
-        movieList.add(movie);
+  public PaginatedMovies transform(PaginatedMoviesEntity paginatedMoviesEntity) {
+      PaginatedMovies paginatedMovies = null;
+      if (paginatedMoviesEntity != null) {
+          Gson gson = new Gson();
+          paginatedMovies = gson.fromJson(gson.toJson(paginatedMoviesEntity), PaginatedMovies.class);
       }
-    }
 
-    return movieList;
+      return paginatedMovies;
   }
 }

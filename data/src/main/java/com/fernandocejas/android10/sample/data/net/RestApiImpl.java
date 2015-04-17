@@ -7,93 +7,94 @@ package com.fernandocejas.android10.sample.data.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
 import com.fernandocejas.android10.sample.data.entity.MovieEntity;
-import com.fernandocejas.android10.sample.data.entity.mapper.MovieEntityJsonMapper;
+import com.fernandocejas.android10.sample.data.entity.PaginatedMoviesEntity;
 import com.fernandocejas.android10.sample.data.exception.NetworkConnectionException;
-import java.util.Collection;
+
+import retrofit.RestAdapter;
 
 /**
  * {@link RestApi} implementation for retrieving data from the network.
  */
 public class RestApiImpl implements RestApi {
 
-  private final Context context;
-  private final MovieEntityJsonMapper movieEntityJsonMapper;
+    private final Context mContext;
+    private CloudInterface mRestAdapter;
 
-  /**
-   * Constructor of the class
-   *
-   * @param context {@link android.content.Context}.
-   * @param movieEntityJsonMapper {@link MovieEntityJsonMapper}.
-   */
-  public RestApiImpl(Context context, MovieEntityJsonMapper movieEntityJsonMapper) {
-    if (context == null || movieEntityJsonMapper == null) {
-      throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
-    }
-    this.context = context.getApplicationContext();
-    this.movieEntityJsonMapper = movieEntityJsonMapper;
-  }
-
-  @Override public void getMovieList(MovieListCallback movieListCallback) {
-    if (movieListCallback == null) {
-      throw new IllegalArgumentException("Callback cannot be null!!!");
+    /**
+     * Constructor of the class
+     *
+     */
+    public RestApiImpl(Context context) {
+        mContext = context;
+        buildRestAdapter();
     }
 
-    if (isThereInternetConnection()) {
-      try {
-        ApiConnection getMovieListConnection =
-            ApiConnection.createGET(RestApi.API_URL_GET_USER_LIST);
-        String responseMovieList = getMovieListConnection.requestSyncCall();
-        Collection<MovieEntity> movieEntityList =
-            this.movieEntityJsonMapper.transformMovieEntityCollection(responseMovieList);
+    private void buildRestAdapter() {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(BASE_URL)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
 
-        movieListCallback.onMovieListLoaded(movieEntityList);
-      } catch (Exception e) {
-        movieListCallback.onError(new NetworkConnectionException(e.getCause()));
-      }
-    } else {
-      movieListCallback.onError(new NetworkConnectionException());
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override public void getMovieById(final int movieId,
-      final MovieDetailsCallback movieDetailsCallback) {
-    if (movieDetailsCallback == null) {
-      throw new IllegalArgumentException("Callback cannot be null!!!");
+        mRestAdapter = restAdapter.create(CloudInterface.class);
     }
 
-    if (isThereInternetConnection()) {
-      try {
-        String apiUrl = RestApi.API_URL_GET_USER_DETAILS + movieId + ".json";
-        ApiConnection getMovieDetailsConnection = ApiConnection.createGET(apiUrl);
-        String responseMovieDetails = getMovieDetailsConnection.requestSyncCall();
-        MovieEntity movieEntity = this.movieEntityJsonMapper.transformMovieEntity(responseMovieDetails);
+    @Override
+    public void getMovieList(int page, MovieListCallback movieListCallback) {
+        if (movieListCallback == null) {
+            throw new IllegalArgumentException("Callback cannot be null!!!");
+        }
 
-        movieDetailsCallback.onMovieEntityLoaded(movieEntity);
-      } catch (Exception e) {
-        movieDetailsCallback.onError(new NetworkConnectionException(e.getCause()));
-      }
-    } else {
-      movieDetailsCallback.onError(new NetworkConnectionException());
+        if (isThereInternetConnection()) {
+            try {
+                PaginatedMoviesEntity paginatedMoviesEntity = mRestAdapter.getNowPlaying(API_KEY, page, LANGUAGE);
+                movieListCallback.onMovieListLoaded(paginatedMoviesEntity);
+            } catch (Exception e) {
+                //TODO provide better error handling
+                movieListCallback.onError(new NetworkConnectionException(e.getCause()));
+            }
+        } else {
+            movieListCallback.onError(new NetworkConnectionException());
+        }
     }
-  }
 
-  /**
-   * Checks if the device has any active internet connection.
-   *
-   * @return true device with internet connection, otherwise false.
-   */
-  private boolean isThereInternetConnection() {
-    boolean isConnected;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void getMovieById(final int movieId,
+                             final MovieDetailsCallback movieDetailsCallback) {
+        if (movieDetailsCallback == null) {
+            throw new IllegalArgumentException("Callback cannot be null!!!");
+        }
 
-    ConnectivityManager connectivityManager =
-        (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
-    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-    isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+        if (isThereInternetConnection()) {
+            try {
+                MovieEntity movieDetail = mRestAdapter.getMovieDetail(API_KEY, movieId);
+                movieDetailsCallback.onMovieEntityLoaded(movieDetail);
+            } catch (Exception e) {
+                //TODO provide better error handling
+                movieDetailsCallback.onError(new NetworkConnectionException(e.getCause()));
+            }
+        } else {
+            movieDetailsCallback.onError(new NetworkConnectionException());
+        }
+    }
 
-    return isConnected;
-  }
+    /**
+     * Checks if the device has any active internet connection.
+     *
+     * @return true device with internet connection, otherwise false.
+     */
+    private boolean isThereInternetConnection() {
+        boolean isConnected;
+
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+
+        return isConnected;
+    }
 }

@@ -88,11 +88,8 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
 
   @Override public void renderMovie(MovieModel movie) {
     if (movie != null) {
-      this.iv_cover.setImageUrl(movie.getCoverUrl());
-      this.tv_fullname.setText(movie.getFullName());
-      this.tv_email.setText(movie.getEmail());
-      this.tv_followers.setText(String.valueOf(movie.getFollowers()));
-      this.tv_description.setText(movie.getDescription());
+      this.iv_cover.setImageUrl(movie.getImageUrl(200));
+      this.tv_fullname.setText(movie.getTitle());
     }
   }
 

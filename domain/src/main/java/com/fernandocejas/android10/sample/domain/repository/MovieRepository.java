@@ -5,6 +5,7 @@
 package com.fernandocejas.android10.sample.domain.repository;
 
 import com.fernandocejas.android10.sample.domain.Movie;
+import com.fernandocejas.android10.sample.domain.PaginatedMovies;
 import com.fernandocejas.android10.sample.domain.exception.ErrorBundle;
 import java.util.Collection;
 
@@ -16,7 +17,7 @@ public interface MovieRepository {
    * Callback used to be notified when either a movie list has been loaded or an error happened.
    */
   interface MovieListCallback {
-    void onMovieListLoaded(Collection<Movie> moviesCollection);
+    void onMovieListLoaded(PaginatedMovies paginatedMovies);
 
     void onError(ErrorBundle errorBundle);
   }

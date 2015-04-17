@@ -12,19 +12,20 @@ import static org.junit.Assert.assertThat;
 
 public class MovieTest {
 
-  private static final int FAKE_USER_ID = 8;
+  private static final int FAKE_MOVIE_ID = 8;
 
   private Movie movie;
 
   @Before
   public void setUp() {
-    movie = new Movie(FAKE_USER_ID);
+    movie = new Movie();
+    movie.setId(FAKE_MOVIE_ID);
   }
 
   @Test
   public void testMovieConstructorHappyCase() {
-    int movieId = movie.getMovieId();
+    int movieId = movie.getId();
 
-    assertThat(movieId, is(FAKE_USER_ID));
+    assertThat(movieId, is(FAKE_MOVIE_ID));
   }
 }

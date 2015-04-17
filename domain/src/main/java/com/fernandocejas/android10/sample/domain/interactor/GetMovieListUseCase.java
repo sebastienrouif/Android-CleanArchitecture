@@ -5,6 +5,7 @@
 package com.fernandocejas.android10.sample.domain.interactor;
 
 import com.fernandocejas.android10.sample.domain.Movie;
+import com.fernandocejas.android10.sample.domain.PaginatedMovies;
 import com.fernandocejas.android10.sample.domain.exception.ErrorBundle;
 import java.util.Collection;
 
@@ -19,7 +20,7 @@ public interface GetMovieListUseCase extends Interactor {
    * happened.
    */
   interface Callback {
-    void onMovieListLoaded(Collection<Movie> moviesCollection);
+    void onMovieListLoaded(PaginatedMovies paginatedMovies);
     void onError(ErrorBundle errorBundle);
   }
 

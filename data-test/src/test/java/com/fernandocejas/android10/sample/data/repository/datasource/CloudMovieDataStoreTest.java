@@ -7,8 +7,9 @@ package com.fernandocejas.android10.sample.data.repository.datasource;
 import com.fernandocejas.android10.sample.data.ApplicationTestCase;
 import com.fernandocejas.android10.sample.data.cache.MovieCache;
 import com.fernandocejas.android10.sample.data.entity.MovieEntity;
+import com.fernandocejas.android10.sample.data.entity.PaginatedMoviesEntity;
 import com.fernandocejas.android10.sample.data.net.RestApi;
-import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -24,84 +25,87 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class CloudMovieDataStoreTest extends ApplicationTestCase {
 
-  private static final int FAKE_USER_ID = 765;
+    private static final int FAKE_USER_ID = 765;
+    private static final int FAKE_PAGE = 1;
 
-  private CloudMovieDataStore cloudMovieDataStore;
+    private CloudMovieDataStore cloudMovieDataStore;
 
-  @Mock
-  private RestApi mockRestApi;
-  @Mock
-  private MovieCache mockMovieCache;
-  @Mock
-  private MovieDataStore.MovieListCallback mockMovieListDataStoreCallback;
-  @Mock
-  private MovieDataStore.MovieDetailsCallback mockMovieDetailsDataStoreCallback;
-  @Captor
-  private ArgumentCaptor<RestApi.MovieListCallback> restApiMovieListCallbackArgumentCaptor;
-  @Captor
-  private ArgumentCaptor<RestApi.MovieDetailsCallback> restApiMovieDetailsCallbackArgumentCaptor;
+    @Mock
+    private RestApi mockRestApi;
+    @Mock
+    private MovieCache mockMovieCache;
+    @Mock
+    private MovieDataStore.MovieListCallback mockMovieListDataStoreCallback;
+    @Mock
+    private MovieDataStore.MovieDetailsCallback mockMovieDetailsDataStoreCallback;
+    @Captor
+    private ArgumentCaptor<RestApi.MovieListCallback> restApiMovieListCallbackArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<RestApi.MovieDetailsCallback> restApiMovieDetailsCallbackArgumentCaptor;
 
-  @Before
-  public void setUp() {
-    MockitoAnnotations.initMocks(this);
-    cloudMovieDataStore = new CloudMovieDataStore(mockRestApi, mockMovieCache);
-  }
 
-  @Test
-  public void testGetMovieEntityDetailsSuccessfully() {
-    MovieEntity mockMovieEntity = mock(MovieEntity.class);
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        cloudMovieDataStore = new CloudMovieDataStore(mockRestApi, mockMovieCache);
+    }
 
-    cloudMovieDataStore.getMovieEntityDetails(FAKE_USER_ID, mockMovieDetailsDataStoreCallback);
+    @Test
+    public void testGetMovieEntityDetailsSuccessfully() {
+        MovieEntity mockMovieEntity = mock(MovieEntity.class);
 
-    verify(mockRestApi).getMovieById(anyInt(), restApiMovieDetailsCallbackArgumentCaptor.capture());
-    verifyZeroInteractions(mockMovieDetailsDataStoreCallback);
-    verifyZeroInteractions(mockMovieCache);
+        cloudMovieDataStore.getMovieEntityDetails(FAKE_USER_ID, mockMovieDetailsDataStoreCallback);
 
-    restApiMovieDetailsCallbackArgumentCaptor.getValue().onMovieEntityLoaded(mockMovieEntity);
+        verify(mockRestApi).getMovieById(anyInt(), restApiMovieDetailsCallbackArgumentCaptor.capture());
+        verifyZeroInteractions(mockMovieDetailsDataStoreCallback);
+        verifyZeroInteractions(mockMovieCache);
 
-    verify(mockMovieDetailsDataStoreCallback).onMovieEntityLoaded(mockMovieEntity);
-    verify(mockMovieCache).put(mockMovieEntity);
-  }
+        restApiMovieDetailsCallbackArgumentCaptor.getValue().onMovieEntityLoaded(mockMovieEntity);
 
-  @Test
-  public void testGetMovieEntityDetailsError() {
-    cloudMovieDataStore.getMovieEntityDetails(FAKE_USER_ID, mockMovieDetailsDataStoreCallback);
+        verify(mockMovieDetailsDataStoreCallback).onMovieEntityLoaded(mockMovieEntity);
+        verify(mockMovieCache).put(mockMovieEntity);
+    }
 
-    verify(mockRestApi).getMovieById(anyInt(), restApiMovieDetailsCallbackArgumentCaptor.capture());
-    verifyZeroInteractions(mockMovieDetailsDataStoreCallback);
+    @Test
+    public void testGetMovieEntityDetailsError() {
+        cloudMovieDataStore.getMovieEntityDetails(FAKE_USER_ID, mockMovieDetailsDataStoreCallback);
 
-    restApiMovieDetailsCallbackArgumentCaptor.getValue().onError(any(Exception.class));
+        verify(mockRestApi).getMovieById(anyInt(), restApiMovieDetailsCallbackArgumentCaptor.capture());
+        verifyZeroInteractions(mockMovieDetailsDataStoreCallback);
 
-    verify(mockMovieDetailsDataStoreCallback).onError(any(Exception.class));
-    verifyZeroInteractions(mockMovieCache);
-  }
+        restApiMovieDetailsCallbackArgumentCaptor.getValue().onError(any(Exception.class));
 
-  @Test
-  @SuppressWarnings("unchecked")
-  public void testGetMovieEntityListSuccessfully() {
-    Collection<MovieEntity> mockMovieEntityCollection = (Collection<MovieEntity>)mock(Collection.class);
+        verify(mockMovieDetailsDataStoreCallback).onError(any(Exception.class));
+        verifyZeroInteractions(mockMovieCache);
+    }
 
-    cloudMovieDataStore.getMoviesEntityList(mockMovieListDataStoreCallback);
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testGetMovieEntityListSuccessfully() {
 
-    verify(mockRestApi).getMovieList(restApiMovieListCallbackArgumentCaptor.capture());
-    verifyZeroInteractions(mockMovieListDataStoreCallback);
-    verifyZeroInteractions(mockMovieCache);
+        PaginatedMoviesEntity paginatedMoviesEntity = mock(PaginatedMoviesEntity.class);
 
-    restApiMovieListCallbackArgumentCaptor.getValue().onMovieListLoaded(mockMovieEntityCollection);
+        cloudMovieDataStore.getMoviesEntityList(FAKE_PAGE, mockMovieListDataStoreCallback);
 
-    verify(mockMovieListDataStoreCallback).onMovieListLoaded(mockMovieEntityCollection);
-  }
+        verify(mockRestApi).getMovieList(anyInt(), restApiMovieListCallbackArgumentCaptor.capture());
+        verifyZeroInteractions(mockMovieListDataStoreCallback);
+        verifyZeroInteractions(mockMovieCache);
 
-  @Test
-  public void testGetMovieEntityListError() {
-    cloudMovieDataStore.getMoviesEntityList(mockMovieListDataStoreCallback);
+        restApiMovieListCallbackArgumentCaptor.getValue().onMovieListLoaded(paginatedMoviesEntity);
 
-    verify(mockRestApi).getMovieList(restApiMovieListCallbackArgumentCaptor.capture());
-    verifyZeroInteractions(mockMovieListDataStoreCallback);
+        verify(mockMovieListDataStoreCallback).onMovieListLoaded(paginatedMoviesEntity);
+    }
 
-    restApiMovieListCallbackArgumentCaptor.getValue().onError(any(Exception.class));
+    @Test
+    public void testGetMovieEntityListError() {
+        cloudMovieDataStore.getMoviesEntityList(FAKE_PAGE, mockMovieListDataStoreCallback);
 
-    verify(mockMovieListDataStoreCallback).onError(any(Exception.class));
-    verifyZeroInteractions(mockMovieCache);
-  }
+        verify(mockRestApi).getMovieList(anyInt(), restApiMovieListCallbackArgumentCaptor.capture());
+        verifyZeroInteractions(mockMovieListDataStoreCallback);
+
+        restApiMovieListCallbackArgumentCaptor.getValue().onError(any(Exception.class));
+
+        verify(mockMovieListDataStoreCallback).onError(any(Exception.class));
+        verifyZeroInteractions(mockMovieCache);
+    }
 }

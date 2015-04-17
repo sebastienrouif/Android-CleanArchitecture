@@ -7,6 +7,8 @@ package com.fernandocejas.android10.sample.presentation.mapper;
 import com.fernandocejas.android10.sample.domain.Movie;
 import com.fernandocejas.android10.sample.presentation.internal.di.PerActivity;
 import com.fernandocejas.android10.sample.presentation.model.MovieModel;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,14 +34,8 @@ public class MovieModelDataMapper {
     if (movie == null) {
       throw new IllegalArgumentException("Cannot transform a null value");
     }
-    MovieModel movieModel = new MovieModel(movie.getMovieId());
-    movieModel.setCoverUrl(movie.getCoverUrl());
-    movieModel.setFullName(movie.getFullName());
-    movieModel.setEmail(movie.getEmail());
-    movieModel.setDescription(movie.getDescription());
-    movieModel.setFollowers(movie.getFollowers());
-
-    return movieModel;
+      Gson gson = new Gson();
+      return gson.fromJson(gson.toJson(movie), MovieModel.class);
   }
 
   /**

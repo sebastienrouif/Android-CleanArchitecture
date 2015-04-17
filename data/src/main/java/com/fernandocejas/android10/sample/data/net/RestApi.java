@@ -5,51 +5,52 @@
 package com.fernandocejas.android10.sample.data.net;
 
 import com.fernandocejas.android10.sample.data.entity.MovieEntity;
+import com.fernandocejas.android10.sample.data.entity.PaginatedMoviesEntity;
 import com.fernandocejas.android10.sample.domain.Movie;
+
 import java.util.Collection;
 
 /**
  * RestApi for retrieving data from the network.
  */
 public interface RestApi {
-  /**
-   * Callback used to be notified when either a movie list has been loaded or an error happened.
-   */
-  interface MovieListCallback {
-    void onMovieListLoaded(Collection<MovieEntity> moviesCollection);
 
-    void onError(Exception exception);
-  }
+    public static final String BASE_URL = "http://api.themoviedb.org/3";
+    public static final String API_KEY = "247c4a94cc80cc47a3bdb84c75194645";
+    public static final String LANGUAGE = "en";
 
-  /**
-   * Callback to be notified when getting a movie from the network.
-   */
-  interface MovieDetailsCallback {
-    void onMovieEntityLoaded(MovieEntity movieEntity);
+    /**
+     * Callback used to be notified when either a movie list has been loaded or an error happened.
+     */
+    interface MovieListCallback {
+        void onMovieListLoaded(PaginatedMoviesEntity paginatedMoviesEntity);
 
-    void onError(Exception exception);
-  }
+        void onError(Exception exception);
+    }
 
-  static final String API_BASE_URL = "http://www.android10.org/myapi/";
+    /**
+     * Callback to be notified when getting a movie from the network.
+     */
+    interface MovieDetailsCallback {
+        void onMovieEntityLoaded(MovieEntity movieEntity);
 
-  /** Api url for getting all movies */
-  static final String API_URL_GET_USER_LIST = API_BASE_URL + "users.json";
-  /** Api url for getting a movie profile: Remember to concatenate id + 'json' */
-  static final String API_URL_GET_USER_DETAILS = API_BASE_URL + "user_";
+        void onError(Exception exception);
+    }
 
-  /**
-   * Get a collection of {@link Movie}.
-   *
-   * @param movieListCallback A {@link MovieListCallback} used for notifying clients.
-   */
-  void getMovieList(MovieListCallback movieListCallback);
+    /**
+     * Get a collection of {@link Movie}.
+     *
+     * @param page
+     * @param movieListCallback A {@link MovieListCallback} used for notifying clients.
+     */
+    void getMovieList(int page, MovieListCallback movieListCallback);
 
-  /**
-   * Retrieves a movie by id from the network.
-   *
-   * @param movieId The movie id used to get movie data.
-   * @param movieDetailsCallback {@link MovieDetailsCallback} to be notified when movie data has been
-   * retrieved.
-   */
-  void getMovieById(final int movieId, final MovieDetailsCallback movieDetailsCallback);
+    /**
+     * Retrieves a movie by id from the network.
+     *
+     * @param movieId              The movie id used to get movie data.
+     * @param movieDetailsCallback {@link MovieDetailsCallback} to be notified when movie data has been
+     *                             retrieved.
+     */
+    void getMovieById(final int movieId, final MovieDetailsCallback movieDetailsCallback);
 }
