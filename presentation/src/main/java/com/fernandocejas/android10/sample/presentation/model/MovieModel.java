@@ -314,7 +314,7 @@ public class MovieModel {
      * @param size pixels wide
      * @return
      */
-    public String getImageUrl(int size) {
+    public String getPosterUrl(int size) {
         return String.format(IMAGE_URL, size, posterPath);
     }
 }

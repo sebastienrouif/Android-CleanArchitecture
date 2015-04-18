@@ -19,15 +19,15 @@ import com.fernandocejas.android10.sample.presentation.view.fragment.MovieDetail
  */
 public class MovieDetailsActivity extends BaseActivity implements HasComponent<MovieComponent> {
 
-  private static final String INTENT_EXTRA_PARAM_USER_ID = "org.android10.INTENT_PARAM_USER_ID";
-  private static final String INSTANCE_STATE_PARAM_USER_ID = "org.android10.STATE_PARAM_USER_ID";
+  private static final String INTENT_EXTRA_PARAM_MOVIE_ID = "org.android10.INTENT_PARAM_MOVIE_ID";
+  private static final String INSTANCE_STATE_PARAM_MOVIE_ID = "org.android10.STATE_PARAM_MOVIE_ID";
 
   private int movieId;
   private MovieComponent movieComponent;
 
   public static Intent getCallingIntent(Context context, int movieId) {
     Intent callingIntent = new Intent(context, MovieDetailsActivity.class);
-    callingIntent.putExtra(INTENT_EXTRA_PARAM_USER_ID, movieId);
+    callingIntent.putExtra(INTENT_EXTRA_PARAM_MOVIE_ID, movieId);
 
     return callingIntent;
   }
@@ -43,7 +43,7 @@ public class MovieDetailsActivity extends BaseActivity implements HasComponent<M
 
   @Override protected void onSaveInstanceState(Bundle outState) {
     if (outState != null) {
-      outState.putInt(INSTANCE_STATE_PARAM_USER_ID, this.movieId);
+      outState.putInt(INSTANCE_STATE_PARAM_MOVIE_ID, this.movieId);
     }
     super.onSaveInstanceState(outState);
   }
@@ -53,10 +53,10 @@ public class MovieDetailsActivity extends BaseActivity implements HasComponent<M
    */
   private void initializeActivity(Bundle savedInstanceState) {
     if (savedInstanceState == null) {
-      this.movieId = getIntent().getIntExtra(INTENT_EXTRA_PARAM_USER_ID, -1);
+      this.movieId = getIntent().getIntExtra(INTENT_EXTRA_PARAM_MOVIE_ID, -1);
       addFragment(R.id.fl_fragment, MovieDetailsFragment.newInstance(this.movieId));
     } else {
-      this.movieId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_USER_ID);
+      this.movieId = savedInstanceState.getInt(INSTANCE_STATE_PARAM_MOVIE_ID);
     }
   }
 

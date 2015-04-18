@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class DiskMovieDataStoreTest extends ApplicationTestCase {
 
-  private static final int FAKE_USER_ID = 11;
+  private static final int FAKE_MOVIE_ID = 11;
 
   private DiskMovieDataStore diskMovieDataStore;
 
@@ -48,7 +48,7 @@ public class DiskMovieDataStoreTest extends ApplicationTestCase {
   public void testGetMovieEntityByIdSuccessfully() {
     MovieEntity mockMovieEntity = mock(MovieEntity.class);
 
-    diskMovieDataStore.getMovieEntityDetails(FAKE_USER_ID, mockMovieDetailsDataStoreCallback);
+    diskMovieDataStore.getMovieEntityDetails(FAKE_MOVIE_ID, mockMovieDetailsDataStoreCallback);
 
     verify(mockMovieCache).get(anyInt(), movieCacheCallbackArgumentCaptor.capture());
     verifyZeroInteractions(mockMovieDetailsDataStoreCallback);
@@ -60,7 +60,7 @@ public class DiskMovieDataStoreTest extends ApplicationTestCase {
 
   @Test
   public void testGetMovieEntityByIdError() {
-    diskMovieDataStore.getMovieEntityDetails(FAKE_USER_ID, mockMovieDetailsDataStoreCallback);
+    diskMovieDataStore.getMovieEntityDetails(FAKE_MOVIE_ID, mockMovieDetailsDataStoreCallback);
 
     verify(mockMovieCache).get(anyInt(), movieCacheCallbackArgumentCaptor.capture());
     verifyZeroInteractions(mockMovieDetailsDataStoreCallback);

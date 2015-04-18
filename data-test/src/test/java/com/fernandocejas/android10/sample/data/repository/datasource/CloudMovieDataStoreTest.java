@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class CloudMovieDataStoreTest extends ApplicationTestCase {
 
-    private static final int FAKE_USER_ID = 765;
+    private static final int FAKE_MOVIE_ID = 765;
     private static final int FAKE_PAGE = 1;
 
     private CloudMovieDataStore cloudMovieDataStore;
@@ -54,7 +54,7 @@ public class CloudMovieDataStoreTest extends ApplicationTestCase {
     public void testGetMovieEntityDetailsSuccessfully() {
         MovieEntity mockMovieEntity = mock(MovieEntity.class);
 
-        cloudMovieDataStore.getMovieEntityDetails(FAKE_USER_ID, mockMovieDetailsDataStoreCallback);
+        cloudMovieDataStore.getMovieEntityDetails(FAKE_MOVIE_ID, mockMovieDetailsDataStoreCallback);
 
         verify(mockRestApi).getMovieById(anyInt(), restApiMovieDetailsCallbackArgumentCaptor.capture());
         verifyZeroInteractions(mockMovieDetailsDataStoreCallback);
@@ -68,7 +68,7 @@ public class CloudMovieDataStoreTest extends ApplicationTestCase {
 
     @Test
     public void testGetMovieEntityDetailsError() {
-        cloudMovieDataStore.getMovieEntityDetails(FAKE_USER_ID, mockMovieDetailsDataStoreCallback);
+        cloudMovieDataStore.getMovieEntityDetails(FAKE_MOVIE_ID, mockMovieDetailsDataStoreCallback);
 
         verify(mockRestApi).getMovieById(anyInt(), restApiMovieDetailsCallbackArgumentCaptor.capture());
         verifyZeroInteractions(mockMovieDetailsDataStoreCallback);

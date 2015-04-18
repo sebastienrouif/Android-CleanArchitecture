@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class MovieDataRepositoryTest extends ApplicationTestCase {
 
-  private static final int FAKE_USER_ID = 123;
+  private static final int FAKE_MOVIE_ID = 123;
 
   private MovieDataRepository movieDataRepository;
 
@@ -76,7 +76,7 @@ public class MovieDataRepositoryTest extends ApplicationTestCase {
         any(MovieDataStore.MovieDetailsCallback.class));
     given(mockMovieEntityDataMapper.transform(mockMovieEntity)).willReturn(mockMovie);
 
-    movieDataRepository.getMovieById(FAKE_USER_ID, mockMovieDetailsRepositoryCallback);
+    movieDataRepository.getMovieById(FAKE_MOVIE_ID, mockMovieDetailsRepositoryCallback);
 
     verify(mockMovieEntityDataMapper).transform(mockMovieEntity);
     verify(mockMovieDetailsRepositoryCallback).onMovieLoaded(mockMovie);
@@ -96,7 +96,7 @@ public class MovieDataRepositoryTest extends ApplicationTestCase {
 
     doNothing().when(mockMovieDetailsRepositoryCallback).onError(any(RepositoryErrorBundle.class));
 
-    movieDataRepository.getMovieById(FAKE_USER_ID, mockMovieDetailsRepositoryCallback);
+    movieDataRepository.getMovieById(FAKE_MOVIE_ID, mockMovieDetailsRepositoryCallback);
 
     verify(mockMovieEntityDataMapper).transform(mockMovieEntity);
     verify(mockMovieDetailsRepositoryCallback).onError(any(RepositoryErrorBundle.class));
@@ -113,7 +113,7 @@ public class MovieDataRepositoryTest extends ApplicationTestCase {
     }).when(mockMovieDataStore).getMovieEntityDetails(anyInt(),
         any(MovieDataStore.MovieDetailsCallback.class));
 
-    movieDataRepository.getMovieById(FAKE_USER_ID, mockMovieDetailsRepositoryCallback);
+    movieDataRepository.getMovieById(FAKE_MOVIE_ID, mockMovieDetailsRepositoryCallback);
 
     verify(mockMovieDetailsRepositoryCallback).onError(any(RepositoryErrorBundle.class));
     verifyZeroInteractions(mockMovieEntityDataMapper);

@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class GetMovieDetailsUseCaseTest {
 
-  private static final int FAKE_USER_ID = 123;
+  private static final int FAKE_MOVIE_ID = 123;
 
   private GetMovieDetailsUseCase getMovieDetailsUseCase;
 
@@ -52,7 +52,7 @@ public class GetMovieDetailsUseCaseTest {
     GetMovieDetailsUseCase.Callback mockGetMovieDetailsCallback =
         mock(GetMovieDetailsUseCase.Callback.class);
 
-    getMovieDetailsUseCase.execute(FAKE_USER_ID, mockGetMovieDetailsCallback);
+    getMovieDetailsUseCase.execute(FAKE_MOVIE_ID, mockGetMovieDetailsCallback);
 
     verify(mockThreadExecutor).execute(any(Interactor.class));
     verifyNoMoreInteractions(mockThreadExecutor);
@@ -69,7 +69,7 @@ public class GetMovieDetailsUseCaseTest {
     doNothing().when(mockMovieRepository)
         .getMovieById(anyInt(), any(MovieRepository.MovieDetailsCallback.class));
 
-    getMovieDetailsUseCase.execute(FAKE_USER_ID, mockGetMovieDetailsCallback);
+    getMovieDetailsUseCase.execute(FAKE_MOVIE_ID, mockGetMovieDetailsCallback);
     getMovieDetailsUseCase.run();
 
     verify(mockMovieRepository).getMovieById(anyInt(), any(MovieRepository.MovieDetailsCallback.class));
@@ -94,7 +94,7 @@ public class GetMovieDetailsUseCaseTest {
     }).when(mockMovieRepository)
         .getMovieById(anyInt(), any(MovieRepository.MovieDetailsCallback.class));
 
-    getMovieDetailsUseCase.execute(FAKE_USER_ID, mockGetMovieDetailsCallback);
+    getMovieDetailsUseCase.execute(FAKE_MOVIE_ID, mockGetMovieDetailsCallback);
     getMovieDetailsUseCase.run();
 
     verify(mockPostExecutionThread).post(any(Runnable.class));
@@ -118,7 +118,7 @@ public class GetMovieDetailsUseCaseTest {
     }).when(mockMovieRepository)
         .getMovieById(anyInt(), any(MovieRepository.MovieDetailsCallback.class));
 
-    getMovieDetailsUseCase.execute(FAKE_USER_ID, mockGetMovieDetailsCallback);
+    getMovieDetailsUseCase.execute(FAKE_MOVIE_ID, mockGetMovieDetailsCallback);
     getMovieDetailsUseCase.run();
 
     verify(mockPostExecutionThread).post(any(Runnable.class));

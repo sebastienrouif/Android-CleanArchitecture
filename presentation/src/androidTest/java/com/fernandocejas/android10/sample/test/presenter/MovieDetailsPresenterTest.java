@@ -23,7 +23,7 @@ import static org.mockito.Mockito.verify;
 
 public class MovieDetailsPresenterTest extends AndroidTestCase {
 
-    private static final int FAKE_USER_ID = 123;
+    private static final int FAKE_MOVIE_ID = 123;
 
     private MovieDetailsPresenter movieDetailsPresenter;
 
@@ -50,7 +50,7 @@ public class MovieDetailsPresenterTest extends AndroidTestCase {
                 .execute(anyInt(), any(GetMovieDetailsUseCase.Callback.class));
         given(mockMovieDetailsView.getContext()).willReturn(mockContext);
 
-        movieDetailsPresenter.initialize(FAKE_USER_ID);
+        movieDetailsPresenter.initialize(FAKE_MOVIE_ID);
 
         verify(mockMovieDetailsView).hideRetry();
         verify(mockMovieDetailsView).showLoading();

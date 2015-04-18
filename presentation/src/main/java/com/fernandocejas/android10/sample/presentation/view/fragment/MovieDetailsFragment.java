@@ -28,7 +28,7 @@ import javax.inject.Inject;
  */
 public class MovieDetailsFragment extends BaseFragment implements MovieDetailsView {
 
-  private static final String ARGUMENT_KEY_USER_ID = "org.android10.ARGUMENT_USER_ID";
+  private static final String ARGUMENT_KEY_MOVIE_ID = "org.android10.ARGUMENT_MOVIE_ID";
 
   private int movieId;
 
@@ -49,7 +49,7 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
 
     Bundle argumentsBundle = new Bundle();
-    argumentsBundle.putInt(ARGUMENT_KEY_USER_ID, movieId);
+    argumentsBundle.putInt(ARGUMENT_KEY_MOVIE_ID, movieId);
     movieDetailsFragment.setArguments(argumentsBundle);
 
     return movieDetailsFragment;
@@ -82,13 +82,13 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
   private void initialize() {
     this.getComponent(MovieComponent.class).inject(this);
     this.movieDetailsPresenter.setView(this);
-    this.movieId = getArguments().getInt(ARGUMENT_KEY_USER_ID);
+    this.movieId = getArguments().getInt(ARGUMENT_KEY_MOVIE_ID);
     this.movieDetailsPresenter.initialize(this.movieId);
   }
 
   @Override public void renderMovie(MovieModel movie) {
     if (movie != null) {
-      this.iv_cover.setImageUrl(movie.getImageUrl(200));
+      this.iv_cover.setImageUrl(movie.getPosterUrl(200));
       this.tv_fullname.setText(movie.getTitle());
     }
   }
