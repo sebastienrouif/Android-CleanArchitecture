@@ -31,6 +31,7 @@ public class MovieListPresenter implements Presenter {
 
     private final GetMovieListUseCase getMovieListUseCase;
     private final MovieModelDataMapper movieModelDataMapper;
+    private int mLastRequestedCurrentPage = 1;
 
     @Inject
     public MovieListPresenter(GetMovieListUseCase getMovieListMovieCase,
@@ -64,7 +65,7 @@ public class MovieListPresenter implements Presenter {
     private void loadMovieList() {
         hideViewRetry();
         showViewLoading();
-        getMovieList(1);
+        getMovieList(mLastRequestedCurrentPage);
     }
 
     public void onMovieClicked(MovieModel movieModel) {
@@ -120,6 +121,7 @@ public class MovieListPresenter implements Presenter {
     };
 
     public void loadMore(int current_page) {
+        mLastRequestedCurrentPage = current_page;
         getMovieList(current_page);
     }
 }
