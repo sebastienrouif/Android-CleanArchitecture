@@ -63,7 +63,7 @@ public class CloudMovieDataStoreTest extends ApplicationTestCase {
         restApiMovieDetailsCallbackArgumentCaptor.getValue().onMovieEntityLoaded(mockMovieEntity);
 
         verify(mockMovieDetailsDataStoreCallback).onMovieEntityLoaded(mockMovieEntity);
-        verify(mockMovieCache).put(mockMovieEntity);
+        verify(mockMovieCache).putMovie(mockMovieEntity);
     }
 
     @Test

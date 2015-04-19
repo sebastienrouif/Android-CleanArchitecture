@@ -38,6 +38,7 @@ public class CloudMovieDataStore implements MovieDataStore {
         mRestApi.getMovieList(page, new RestApi.MovieListCallback() {
             @Override
             public void onMovieListLoaded(PaginatedMoviesEntity paginatedMoviesEntity) {
+                putPaginatedMoviesEntityInCache(paginatedMoviesEntity);
                 movieListCallback.onMovieListLoaded(paginatedMoviesEntity);
             }
 
@@ -72,13 +73,24 @@ public class CloudMovieDataStore implements MovieDataStore {
     }
 
     /**
+     * Saves a {@link PaginatedMoviesEntity} into cache.
+     *
+     * @param paginatedMoviesEntity The {@link PaginatedMoviesEntity} to save.
+     */
+    private void putPaginatedMoviesEntityInCache(PaginatedMoviesEntity paginatedMoviesEntity) {
+        if (paginatedMoviesEntity != null) {
+            this.mMovieCache.putPaginatedMovie(paginatedMoviesEntity);
+        }
+    }
+
+    /**
      * Saves a {@link MovieEntity} into cache.
      *
      * @param movieEntity The {@link MovieEntity} to save.
      */
     private void putMovieEntityInCache(MovieEntity movieEntity) {
         if (movieEntity != null) {
-            this.mMovieCache.put(movieEntity);
+            this.mMovieCache.putMovie(movieEntity);
         }
     }
 }

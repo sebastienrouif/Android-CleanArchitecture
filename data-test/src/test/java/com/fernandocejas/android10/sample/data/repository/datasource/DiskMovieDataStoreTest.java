@@ -7,6 +7,8 @@ package com.fernandocejas.android10.sample.data.repository.datasource;
 import com.fernandocejas.android10.sample.data.ApplicationTestCase;
 import com.fernandocejas.android10.sample.data.cache.MovieCache;
 import com.fernandocejas.android10.sample.data.entity.MovieEntity;
+import com.fernandocejas.android10.sample.data.entity.PaginatedMoviesEntity;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,6 +27,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 public class DiskMovieDataStoreTest extends ApplicationTestCase {
 
   private static final int FAKE_MOVIE_ID = 11;
+  private static final int FAKE_MOVIE_PAGE = 11;
 
   private DiskMovieDataStore diskMovieDataStore;
 
@@ -34,6 +37,10 @@ public class DiskMovieDataStoreTest extends ApplicationTestCase {
   private MovieDataStore.MovieDetailsCallback mockMovieDetailsDataStoreCallback;
   @Captor
   private ArgumentCaptor<MovieCache.MovieCacheCallback> movieCacheCallbackArgumentCaptor;
+  @Mock
+  private MovieDataStore.MovieListCallback mockMovieListDataStoreCallback;
+  @Captor
+  private ArgumentCaptor<MovieCache.PaginatedMovieCacheCallback> movieListDataStoreCallbackArgumentCaptor;
 
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
@@ -50,7 +57,7 @@ public class DiskMovieDataStoreTest extends ApplicationTestCase {
 
     diskMovieDataStore.getMovieEntityDetails(FAKE_MOVIE_ID, mockMovieDetailsDataStoreCallback);
 
-    verify(mockMovieCache).get(anyInt(), movieCacheCallbackArgumentCaptor.capture());
+    verify(mockMovieCache).getMovie(anyInt(), movieCacheCallbackArgumentCaptor.capture());
     verifyZeroInteractions(mockMovieDetailsDataStoreCallback);
 
     movieCacheCallbackArgumentCaptor.getValue().onMovieEntityLoaded(mockMovieEntity);
@@ -62,7 +69,7 @@ public class DiskMovieDataStoreTest extends ApplicationTestCase {
   public void testGetMovieEntityByIdError() {
     diskMovieDataStore.getMovieEntityDetails(FAKE_MOVIE_ID, mockMovieDetailsDataStoreCallback);
 
-    verify(mockMovieCache).get(anyInt(), movieCacheCallbackArgumentCaptor.capture());
+    verify(mockMovieCache).getMovie(anyInt(), movieCacheCallbackArgumentCaptor.capture());
     verifyZeroInteractions(mockMovieDetailsDataStoreCallback);
 
     movieCacheCallbackArgumentCaptor.getValue().onError(any(Exception.class));
@@ -71,8 +78,16 @@ public class DiskMovieDataStoreTest extends ApplicationTestCase {
   }
 
   @Test
-  public void testGetMovieEntityListUnsupported() {
-    expectedException.expect(UnsupportedOperationException.class);
-    diskMovieDataStore.getMoviesEntityList(0, null);
+  public void testGetMovieEntityList() {
+    PaginatedMoviesEntity paginatedMoviesEntity = mock(PaginatedMoviesEntity.class);
+
+    diskMovieDataStore.getMoviesEntityList(FAKE_MOVIE_PAGE, mockMovieListDataStoreCallback);
+
+    verify(mockMovieCache).getPaginatedMovies(anyInt(), movieListDataStoreCallbackArgumentCaptor.capture());
+    verifyZeroInteractions(mockMovieDetailsDataStoreCallback);
+
+    movieListDataStoreCallbackArgumentCaptor.getValue().onMovieEntityLoaded(paginatedMoviesEntity);
+
+    verify(mockMovieListDataStoreCallback).onMovieListLoaded(paginatedMoviesEntity);
   }
 }

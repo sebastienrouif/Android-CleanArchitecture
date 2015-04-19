@@ -47,8 +47,7 @@ public class MovieDataRepository implements MovieRepository {
      */
     @Override
     public void getMovieList(int page, final MovieListCallback movieListCallback) {
-        //we always get all movies from the cloud
-        final MovieDataStore movieDataStore = mMovieDataStoreFactory.createCloudDataStore();
+        final MovieDataStore movieDataStore = mMovieDataStoreFactory.createForPage(page);
         movieDataStore.getMoviesEntityList(page, new MovieDataStore.MovieListCallback() {
             @Override
             public void onMovieListLoaded(PaginatedMoviesEntity paginatedMoviesEntity) {

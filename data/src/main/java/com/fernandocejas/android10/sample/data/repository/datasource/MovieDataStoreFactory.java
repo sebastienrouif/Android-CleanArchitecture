@@ -30,12 +30,27 @@ public class MovieDataStoreFactory {
   }
 
   /**
+   * Create {@link MovieDataStore} from a movie page.
+   */
+  public MovieDataStore createForPage(int page) {
+    MovieDataStore movieDataStore;
+
+    if (!movieCache.isMoviePageExpired() && movieCache.isMoviePageCached(page)) {
+      movieDataStore = new DiskMovieDataStore(this.movieCache);
+    } else {
+      movieDataStore = createCloudDataStore();
+    }
+
+    return movieDataStore;
+  }
+
+  /**
    * Create {@link MovieDataStore} from a movie id.
    */
   public MovieDataStore create(int movieId) {
     MovieDataStore movieDataStore;
 
-    if (!this.movieCache.isExpired() && this.movieCache.isCached(movieId)) {
+    if (!this.movieCache.isMovieExpired() && this.movieCache.isMovieCached(movieId)) {
       movieDataStore = new DiskMovieDataStore(this.movieCache);
     } else {
       movieDataStore = createCloudDataStore();

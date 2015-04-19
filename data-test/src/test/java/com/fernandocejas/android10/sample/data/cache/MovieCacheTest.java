@@ -7,6 +7,7 @@ package com.fernandocejas.android10.sample.data.cache;
 import com.fernandocejas.android10.sample.data.ApplicationTestCase;
 import com.fernandocejas.android10.sample.data.cache.serializer.JsonSerializer;
 import com.fernandocejas.android10.sample.data.entity.MovieEntity;
+import com.fernandocejas.android10.sample.data.entity.PaginatedMoviesEntity;
 import com.fernandocejas.android10.sample.domain.executor.ThreadExecutor;
 
 import org.junit.Before;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.verify;
 public class MovieCacheTest extends ApplicationTestCase {
 
     private static final int FAKE_MOVIE_ID = 123;
+    private static final int FAKE_PAGE = 1;
 
     private MovieCache movieCache;
 
@@ -38,6 +40,10 @@ public class MovieCacheTest extends ApplicationTestCase {
     private MovieCache.MovieCacheCallback mockMovieCacheCallback;
     @Mock
     private MovieEntity mockMovieEntity;
+    @Mock
+    private MovieCache.PaginatedMovieCacheCallback mockPaginatedMovieCacheCallback;
+    @Mock
+    private PaginatedMoviesEntity mockPaginatedMovieEntity;
 
     @Before
     public void setUp() {
@@ -47,13 +53,24 @@ public class MovieCacheTest extends ApplicationTestCase {
     }
 
     @Test
-    public void testGetFromCacheHappyCase() {
+    public void testGetMovieFromCacheHappyCase() {
         given(mockJsonSerializer.deserialize(anyString(), any(Class.class))).willReturn(mockMovieEntity);
 
-        movieCache.get(FAKE_MOVIE_ID, mockMovieCacheCallback);
+        movieCache.getMovie(FAKE_MOVIE_ID, mockMovieCacheCallback);
 
         verify(mockFileManager).readFileContent(any(File.class));
         verify(mockJsonSerializer).deserialize(anyString(), any(Class.class));
         verify(mockMovieCacheCallback).onMovieEntityLoaded(mockMovieEntity);
+    }
+
+    @Test
+    public void testGetPaginatedMovieFromCacheHappyCase() {
+        given(mockJsonSerializer.deserialize(anyString(), any(Class.class))).willReturn(mockPaginatedMovieEntity);
+
+        movieCache.getPaginatedMovies(FAKE_PAGE, mockPaginatedMovieCacheCallback);
+
+        verify(mockFileManager).readFileContent(any(File.class));
+        verify(mockJsonSerializer).deserialize(anyString(), any(Class.class));
+        verify(mockPaginatedMovieCacheCallback).onMovieEntityLoaded(mockPaginatedMovieEntity);
     }
 }

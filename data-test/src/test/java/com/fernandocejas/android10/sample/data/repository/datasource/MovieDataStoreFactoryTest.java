@@ -37,28 +37,28 @@ public class MovieDataStoreFactoryTest extends ApplicationTestCase {
 
   @Test
   public void testCreateDiskDataStore() {
-    given(mockMovieCache.isCached(FAKE_MOVIE_ID)).willReturn(true);
-    given(mockMovieCache.isExpired()).willReturn(false);
+    given(mockMovieCache.isMovieCached(FAKE_MOVIE_ID)).willReturn(true);
+    given(mockMovieCache.isMovieExpired()).willReturn(false);
 
     MovieDataStore movieDataStore = movieDataStoreFactory.create(FAKE_MOVIE_ID);
 
     assertThat(movieDataStore, is(notNullValue()));
     assertThat(movieDataStore, is(instanceOf(DiskMovieDataStore.class)));
 
-    verify(mockMovieCache).isCached(FAKE_MOVIE_ID);
-    verify(mockMovieCache).isExpired();
+    verify(mockMovieCache).isMovieCached(FAKE_MOVIE_ID);
+    verify(mockMovieCache).isMovieExpired();
   }
 
   @Test
   public void testCreateCloudDataStore() {
-    given(mockMovieCache.isExpired()).willReturn(true);
-    given(mockMovieCache.isCached(FAKE_MOVIE_ID)).willReturn(false);
+    given(mockMovieCache.isMovieExpired()).willReturn(true);
+    given(mockMovieCache.isMovieCached(FAKE_MOVIE_ID)).willReturn(false);
 
     MovieDataStore movieDataStore = movieDataStoreFactory.create(FAKE_MOVIE_ID);
 
     assertThat(movieDataStore, is(notNullValue()));
     assertThat(movieDataStore, is(instanceOf(CloudMovieDataStore.class)));
 
-    verify(mockMovieCache).isExpired();
+    verify(mockMovieCache).isMovieExpired();
   }
 }
