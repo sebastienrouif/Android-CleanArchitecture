@@ -60,8 +60,9 @@ public class MovieDetailsActivityTest extends ActivityInstrumentationTestCase2<M
         onView(withId(R.id.rl_progress)).check(matches(not(isDisplayed())));
 
         onView(withId(R.id.tv_fullname)).check(matches(isDisplayed()));
-        onView(withId(R.id.tv_email)).check(matches(isDisplayed()));
-        onView(withId(R.id.tv_description)).check(matches(isDisplayed()));
+        onView(withId(R.id.movie_detail_overview)).check(matches(isDisplayed()));
+        onView(withId(R.id.movie_detail_rating)).check(matches(isDisplayed()));
+        onView(withId(R.id.movie_detail_release_date)).check(matches(isDisplayed()));
     }
 
     public void testLoadMovieHappyCaseData() {
