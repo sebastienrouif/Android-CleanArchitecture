@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class MovieModel {
 
-    public static final String IMAGE_URL = "http://image.tmdb.org/t/p/w%1$s/%2$s.jpg";
+    public static final String IMAGE_URL = "http://image.tmdb.org/t/p/%1$s%2$s";
 
     @SerializedName("adult")
     @Expose
@@ -312,9 +312,27 @@ public class MovieModel {
 
     /**
      * @param size pixels wide
-     * @return
+     * @return constructed url of the poster or null if it doesn't exist
      */
     public String getPosterUrl(int size) {
-        return String.format(IMAGE_URL, size, posterPath);
+        if (posterPath == null) {
+            return null;
+        }
+
+        String stringSize;
+        if (size > 780) {
+            stringSize = "original";
+        } else if (size > 500) {
+            stringSize = "w780";
+        } else if (size > 342) {
+            stringSize = "w342";
+        } else if (size > 185) {
+            stringSize = "w185";
+        } else if (size > 154) {
+            stringSize = "w154";
+        } else {
+            stringSize = "w92";
+        }
+        return String.format(IMAGE_URL, stringSize, posterPath);
     }
 }

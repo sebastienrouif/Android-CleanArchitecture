@@ -23,6 +23,7 @@ import com.fernandocejas.android10.sample.presentation.view.MovieListView;
 import com.fernandocejas.android10.sample.presentation.view.adapter.MoviesAdapter;
 import com.fernandocejas.android10.sample.presentation.view.adapter.MoviesLayoutManager;
 import com.fernandocejas.android10.sample.presentation.view.interaction.EndlessRecyclerOnScrollListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.Collection;
 
@@ -46,6 +47,8 @@ public class MovieListFragment extends BaseFragment implements MovieListView {
 
     @Inject
     MovieListPresenter movieListPresenter;
+
+    Picasso mPicasso;
 
     @InjectView(R.id.rv_movies)
     RecyclerView rv_movies;
@@ -76,9 +79,10 @@ public class MovieListFragment extends BaseFragment implements MovieListView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View fragmentView = inflater.inflate(R.layout.fragment_movie_list, container, true);
         ButterKnife.inject(this, fragmentView);
+        mPicasso = Picasso.with(fragmentView.getContext());
+        mPicasso.setLoggingEnabled(true);
         setupUI();
 
         return fragmentView;
@@ -110,6 +114,7 @@ public class MovieListFragment extends BaseFragment implements MovieListView {
 
     private void setupUI() {
         moviesLayoutManager = new MoviesLayoutManager(getActivity());
+        rv_movies.setHasFixedSize(true);
         rv_movies.setLayoutManager(moviesLayoutManager);
         rv_movies.setOnScrollListener(new EndlessRecyclerOnScrollListener(moviesLayoutManager) {
             @Override
@@ -146,7 +151,7 @@ public class MovieListFragment extends BaseFragment implements MovieListView {
     public void addMovieList(Collection<MovieModel> movieModelCollection) {
         if (movieModelCollection != null) {
             if (moviesAdapter == null) {
-                moviesAdapter = new MoviesAdapter(getActivity(), movieModelCollection);
+                moviesAdapter = new MoviesAdapter(movieModelCollection, mPicasso);
                 moviesAdapter.setOnItemClickListener(onItemClickListener);
                 rv_movies.setAdapter(moviesAdapter);
             } else {

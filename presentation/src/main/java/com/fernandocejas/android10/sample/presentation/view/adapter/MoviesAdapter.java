@@ -1,18 +1,21 @@
 /**
  * Copyright (C) 2014 android10.org. All rights reserved.
+ *
  * @author Fernando Cejas (the android10 coder)
  */
 package com.fernandocejas.android10.sample.presentation.view.adapter;
 
-import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fernandocejas.android10.sample.presentation.R;
 import com.fernandocejas.android10.sample.presentation.model.MovieModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,19 +28,19 @@ import butterknife.InjectView;
  */
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
+
     public interface OnItemClickListener {
         void onMovieItemClicked(MovieModel movieModel);
     }
 
     private List<MovieModel> mMoviesCollection;
-    private final LayoutInflater mLayoutInflater;
+    private final Picasso mPicasso;
 
     private OnItemClickListener mOnItemClickListener;
 
-    public MoviesAdapter(Context context, Collection<MovieModel> moviesCollection) {
+    public MoviesAdapter(Collection<MovieModel> moviesCollection, Picasso picasso) {
         validateMoviesCollection(moviesCollection);
-        mLayoutInflater =
-                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mPicasso = picasso;
         mMoviesCollection = (List<MovieModel>) moviesCollection;
     }
 
@@ -48,16 +51,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = this.mLayoutInflater.inflate(R.layout.row_movie, parent, false);
-        MovieViewHolder movieViewHolder = new MovieViewHolder(view);
-
-        return movieViewHolder;
+        CardView movieRowView = (CardView) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.row_movie, parent, false);
+        return new MovieViewHolder(movieRowView);
     }
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, final int position) {
-        final MovieModel movieModel = this.mMoviesCollection.get(position);
-        holder.textViewTitle.setText(movieModel.getTitle());
+        final MovieModel movieModel = mMoviesCollection.get(position);
+        holder.itemView.setTag(position);
+        holder.bindTo(movieModel, mPicasso);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +83,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.mOnItemClickListener = onItemClickListener;
+        mOnItemClickListener = onItemClickListener;
     }
 
     private void validateMoviesCollection(Collection<MovieModel> moviesCollection) {
@@ -90,12 +93,26 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     }
 
     static class MovieViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.title)
-        TextView textViewTitle;
+        @InjectView(R.id.movie_row_poster) ImageView mPosterImageView;
 
-        public MovieViewHolder(View itemView) {
+        @InjectView(R.id.movie_row_title) TextView mTitleView;
+
+        @InjectView(R.id.movie_row_release_date) TextView mReleaseDateView;
+
+        @InjectView(R.id.movie_row_rating) TextView mRatingView;
+
+        public MovieViewHolder(CardView itemView) {
             super(itemView);
             ButterKnife.inject(this, itemView);
+        }
+
+        public void bindTo(MovieModel movieModel, Picasso picasso) {
+            picasso.load(movieModel.getPosterUrl(mPosterImageView.getWidth()))
+                    .placeholder(R.drawable.logo)
+                    .into(mPosterImageView);
+            mTitleView.setText(movieModel.getTitle());
+            mReleaseDateView.setText(itemView.getResources().getString(R.string.movie_release_date_formated, movieModel.getReleaseDate()));
+            mRatingView.setText(itemView.getResources().getString(R.string.movie_rating_formated, movieModel.getVoteAverage()));
         }
     }
 }

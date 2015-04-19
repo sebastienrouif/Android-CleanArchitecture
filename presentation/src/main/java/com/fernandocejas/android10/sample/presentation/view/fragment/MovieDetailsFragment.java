@@ -10,18 +10,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.fernandocejas.android10.sample.presentation.R;
 import com.fernandocejas.android10.sample.presentation.internal.di.components.MovieComponent;
 import com.fernandocejas.android10.sample.presentation.model.MovieModel;
 import com.fernandocejas.android10.sample.presentation.presenter.MovieDetailsPresenter;
 import com.fernandocejas.android10.sample.presentation.view.MovieDetailsView;
-import com.fernandocejas.android10.sample.presentation.view.component.AutoLoadImageView;
+import com.squareup.picasso.Picasso;
+
 import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Fragment that shows details of a certain movie.
@@ -34,7 +38,7 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
 
   @Inject MovieDetailsPresenter movieDetailsPresenter;
 
-  @InjectView(R.id.iv_cover) AutoLoadImageView iv_cover;
+  @InjectView(R.id.iv_cover) ImageView mPosterView;
   @InjectView(R.id.tv_fullname) TextView tv_fullname;
   @InjectView(R.id.tv_email) TextView tv_email;
   @InjectView(R.id.tv_followers) TextView tv_followers;
@@ -42,6 +46,7 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
   @InjectView(R.id.rl_progress) RelativeLayout rl_progress;
   @InjectView(R.id.rl_retry) RelativeLayout rl_retry;
   @InjectView(R.id.bt_retry) Button bt_retry;
+  private Picasso mPicasso;
 
   public MovieDetailsFragment() { super(); }
 
@@ -84,12 +89,18 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     this.movieDetailsPresenter.setView(this);
     this.movieId = getArguments().getInt(ARGUMENT_KEY_MOVIE_ID);
     this.movieDetailsPresenter.initialize(this.movieId);
+    mPicasso = Picasso.with(getActivity());
   }
 
   @Override public void renderMovie(MovieModel movie) {
     if (movie != null) {
-      this.iv_cover.setImageUrl(movie.getPosterUrl(200));
       this.tv_fullname.setText(movie.getTitle());
+      mPicasso.load(movie.getPosterUrl(mPosterView.getWidth()))
+              .resize(mPosterView.getWidth(), mPosterView.getHeight())
+              .centerCrop()
+              .placeholder(R.drawable.logo)
+              .into(mPosterView);
+
     }
   }
 
