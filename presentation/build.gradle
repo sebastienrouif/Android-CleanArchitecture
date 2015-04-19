@@ -28,6 +28,7 @@ android {
     exclude 'META-INF/ASL2.0'
     exclude 'META-INF/NOTICE'
     exclude 'META-INF/LICENSE'
+    exclude 'META-INF/LICENSE.txt'
   }
 
   lintOptions {
@@ -53,6 +54,7 @@ dependencies {
   compile presentationDependencies.cardview
   compile presentationDependencies.appCompat
   compile presentationDependencies.picasso
+  compile presentationDependencies.okHttp
   compile presentationDependencies.rxJava
   compile presentationDependencies.rxAndroid
   provided presentationDependencies.javaxAnnotation
